@@ -16,3 +16,10 @@ html, body {
     flex: 1;
     overflow: auto;
 }
+@media print
+{
+    .noPrint
+    {
+        display: none !important
+    }
+}
