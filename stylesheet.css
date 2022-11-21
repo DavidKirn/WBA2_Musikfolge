@@ -3,6 +3,9 @@
     --bs-table-hover-bg:rgb(195, 219, 255);
     cursor: pointer;
 }
+.table tr.selected {
+    background: rgb(195, 219, 255);
+}
 html, body {
     height: 100%;
     margin: 0;

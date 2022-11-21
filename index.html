@@ -50,105 +50,18 @@
             </div>
 
             <div class="content-scroll-table container">
-                <table class="table table-striped table-hover" id="Musiktitel">
-                    <tr class="table-secondary">
-                        <th></th>
-                        <th>Titel</th>
-                        <th>Komponist</th>
-                        <th>Bearbeiter</th>
-                        <th>Verlag</th>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Bon Jovi-Roch Mix</td>
-                        <td>Jon Bon Jovi</td>
-                        <td>Wolfgang Wössner</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>CAN YOU ENGLISH PLEASE</td>
-                        <td>Fäaschtbänkler</td>
-                        <td>Roman Wüthrich</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Felize Navidad</td>
-                        <td>José Feliciano</td>
-                        <td>Heinz Briegel</td>
-                        <td>Rundel</td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Festmusik</td>
-                        <td>Richard Wagner</td>
-                        <td>R. Seifert-Kressbronn</td>
-                        <td>Studio-Verlag R.Seifert</td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Griechischer Wein</td>
-                        <td>Udo Jürgens</td>
-                        <td>Erwin Jahreis</td>
-                        <td>Berhard Geiger</td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Polka Nr.37</td>
-                        <td>Methodej Prajka</td>
-                        <td>Siegfried Rundel</td>
-                        <td>Rundel</td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Hard Rock Cafe</td>
-                        <td>Carole King</td>
-                        <td>Erwin Jahreis</td>
-                        <td>Berhard Geiger</td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Hey Jude</td>
-                        <td>J.Lennon, P.MCCartney</td>
-                        <td>Jörg Bollin</td>
-                        <td>Sony</td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Über sieben Brücken</td>
-                        <td>Ulrich Swillms</td>
-                        <td>Manfred Schneider</td>
-                        <td>Rundel</td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Polka Nr.37</td>
-                        <td>Methodej Prajka</td>
-                        <td>Siegfried Rundel</td>
-                        <td>Rundel</td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Hard Rock Cafe</td>
-                        <td>Carole King</td>
-                        <td>Erwin Jahreis</td>
-                        <td>Berhard Geiger</td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Hey Jude</td>
-                        <td>J.Lennon, P.MCCartney</td>
-                        <td>Jörg Bollin</td>
-                        <td>Sony</td>
-                    </tr>
-                    <tr>
-                        <td><input class="form-check-input" type="checkbox" value=""></td>
-                        <td>Über sieben Brücken</td>
-                        <td>Ulrich Swillms</td>
-                        <td>Manfred Schneider</td>
-                        <td>Rundel</td>
-                    </tr>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-secondary">
+                            <th></th>
+                            <th>Titel</th>
+                            <th>Komponist</th>
+                            <th>Bearbeiter</th>
+                            <th>Verlag</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-titles">
+                    </tbody>
                 </table>
             </div>
 
@@ -178,5 +91,154 @@
             </div>
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        
+        <script>
+            window.addEventListener("DOMContentLoaded", (event) => {
+                init();
+            });
+
+            function init() {
+                // TODO: Load titles from Backend
+                const titles = [
+                    {
+                        id: "1",
+                        titel: "Bon Jovi-Roch Mix",
+                        komponist: "Jon Bon Jovi",
+                        bearbeiter: "Wolfgang Wössner",
+                        verlag: ""
+                    },
+                    {
+                        id: "2",
+                        titel: "CAN YOU ENGLISH PLEASE",
+                        komponist: "Fäaschtbänkler",
+                        bearbeiter: "Roman Wüthrich",
+                        verlag: ""
+                    },
+                    {
+                        id: "3",
+                        titel: "Felize Navidad",
+                        komponist: "José Feliciano",
+                        bearbeiter: "Heinz Briegel",
+                        verlag: "Rundel"
+                    },
+                    {
+                        id: "4",
+                        titel: "Festmusik",
+                        komponist: "Richard Wagner",
+                        bearbeiter: "R. Seifert-Kressbronn",
+                        verlag: "Studio-Verlag R.Seifert"
+                    },
+                    {
+                        id: "5",
+                        titel: "Griechischer Wein",
+                        komponist: "Udo Jürgens",
+                        bearbeiter: "Erwin Jahreis",
+                        verlag: "Berhard Geiger"
+                    },
+                    {
+                        id: "6",
+                        titel: "Polka Nr.37",
+                        komponist: "Methodej Prajka",
+                        bearbeiter: "Siegfried Rundel",
+                        verlag: "Rundel"
+                    },
+                    {
+                        id: "7",
+                        titel: "Hard Rock Cafe",
+                        komponist: "Carole King",
+                        bearbeiter: "Erwin Jahreis",
+                        verlag: "Berhard Geiger"
+                    },
+                    {
+                        id: "8",
+                        titel: "Hey Jude",
+                        komponist: "J.Lennon, P.MCCartney",
+                        bearbeiter: "Jörg Bollin",
+                        verlag: "Sony"
+                    },
+                    {
+                        id: "9",
+                        titel: "Über sieben Brücken",
+                        komponist: "Ulrich Swillms",
+                        bearbeiter: "Manfred Schneider",
+                        verlag: "Rundel"
+                    },
+                    {
+                        id: "10",
+                        titel: "Polka Nr.37",
+                        komponist: "Methodej Prajka",
+                        bearbeiter: "Siegfried Rundel",
+                        verlag: "Rundel"
+                    },
+                    {
+                        id: "11",
+                        titel: "Hard Rock Cafe",
+                        komponist: "Carole King",
+                        bearbeiter: "Erwin Jahreis",
+                        verlag: "Berhard Geiger"
+                    },
+                    {
+                        id: "12",
+                        titel: "Hey Jude",
+                        komponist: "J.Lennon, P.MCCartney",
+                        bearbeiter: "Jörg Bollin",
+                        verlag: "Sony"
+                    },
+                    {
+                        id: "13",
+                        titel: "Über sieben Brücken",
+                        komponist: "Ulrich Swillms",
+                        bearbeiter: "Manfred Schneider",
+                        verlag: "Rundel"
+                    }
+                ];
+
+                const tableTitles = document.querySelector("#table-titles");
+
+                // Create table row elements
+                titles.forEach((title) => {
+                    let tr = document.createElement("tr");
+                    tr.setAttribute("id", "table-row-title-" + title.id);
+                    tr.addEventListener("click", () => {
+                        const checkbox = document.querySelector("#checkbox-title-" + title.id);
+
+                        if (tr.classList.contains("selected")) {
+                            tr.classList.remove("selected");
+                            checkbox.checked = false;
+                        } else {
+                            tr.classList.add("selected");
+                            checkbox.checked = true;
+                        }
+                    });
+                    
+                    let tdCheckbox = document.createElement("td");
+                    let inputCheckbox = document.createElement("input");
+                    inputCheckbox.classList.add("form-check-input");
+                    inputCheckbox.setAttribute("type", "checkbox");
+                    inputCheckbox.setAttribute("id", "checkbox-title-" + title.id);
+                    tdCheckbox.appendChild(inputCheckbox);
+                    tr.appendChild(tdCheckbox);
+
+                    let tdTitel = document.createElement("td");
+                    tdTitel.innerText = title.titel;
+                    tr.appendChild(tdTitel);
+
+                    let tdKomponist = document.createElement("td");
+                    tdKomponist.innerText = title.komponist;
+                    tr.appendChild(tdKomponist);
+
+                    let tdBearbeiter = document.createElement("td");
+                    tdBearbeiter.innerText = title.bearbeiter;
+                    tr.appendChild(tdBearbeiter);
+
+                    let tdVerlag = document.createElement("td");
+                    tdVerlag.innerText = title.verlag;
+                    tr.appendChild(tdVerlag);
+
+                    tableTitles.appendChild(tr);
+                });
+            }
+        </script>
     </body>
 </html>
