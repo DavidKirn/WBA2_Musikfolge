@@ -6,6 +6,71 @@
         <title>Musikfolge</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <link href="stylesheet.css" rel="stylesheet" type="text/css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            const verein = [{
+                Vereinsname : 'Musterverein',
+                VNameMusikleiter: 'Max',
+                NNameMusikleiter: 'Mustermann',
+                strasse : 'Musterstraße 1',
+                plz: 12345,
+                ort: 'Musterhausen',
+                anzMusiker: 35,
+                besetzung: 'Blasorchester',
+                GEMANr: 234567
+            }];
+            window.addEventListener('DOMContentLoaded', initPage);
+            function initPage() {
+                const btnVereinsdaten = document.querySelector('#VereinsdatenAendern');
+                btnVereinsdaten.addEventListener('click',showVereinsdaten);
+            }
+            function showVereinsdaten(){
+                verein.forEach(v => {
+                    const NameKapelle = document.querySelector('#NameKapelle');
+                    NameKapelle.value = v.Vereinsname;
+                    const MusikleiterVname = document.querySelector('#MusikleiterVname');
+                    MusikleiterVname.value = v.VNameMusikleiter;
+                    const MusikleiterNname = document.querySelector('#MusikleiterNname');
+                    MusikleiterNname.value = v.NNameMusikleiter;
+                    const StrasseVerein = document.querySelector('#StrasseVerein');
+                    StrasseVerein.value = v.strasse;
+                    const PlzVerein = document.querySelector('#PlzVerein');
+                    PlzVerein.value = v.plz;
+                    const OrtVerein = document.querySelector('#OrtVerein');
+                    OrtVerein.value = v.ort;
+                    const AnzMusizierende = document.querySelector('#AnzMusizierende');
+                    AnzMusizierende.value = v.anzMusiker;
+                    const GemaMitgliedNr = document.querySelector('#GemaMitgliedNr');
+                    GemaMitgliedNr.value = v.GEMANr;
+                    const Besetzung = document.querySelector('#Besetzung');
+                    Besetzung.value = v.besetzung;
+                });
+                const save = document.querySelector('#btn_save_Vereinsdaten');
+                save.addEventListener('click',checkVereinsdaten);
+            }
+            function checkVereinsdaten(){
+                verein.forEach(v => {
+                    const NameKapelle = document.querySelector('#NameKapelle');
+                    v.Vereinsname = NameKapelle.value;
+                    const MusikleiterVname = document.querySelector('#MusikleiterVname');
+                    v.VNameMusikleiter = MusikleiterVname.value;
+                    const MusikleiterNname = document.querySelector('#MusikleiterNname');
+                    v.NNameMusikleiter = MusikleiterNname.value;
+                    const StrasseVerein = document.querySelector('#StrasseVerein');
+                    v.strasse = StrasseVerein.value;
+                    const PlzVerein = document.querySelector('#PlzVerein');
+                    v.plz = PlzVerein.value;
+                    const OrtVerein = document.querySelector('#OrtVerein');
+                    v.ort = OrtVerein.value;
+                    const AnzMusizierende = document.querySelector('#AnzMusizierende');
+                    v.anzMusiker = AnzMusizierende.value;
+                    const GemaMitgliedNr = document.querySelector('#GemaMitgliedNr');
+                    v.GEMANr = GemaMitgliedNr.value;
+                    const Besetzung = document.querySelector('#Besetzung');
+                    v.besetzung = Besetzung.value;
+                });
+            }
+        </script>
     </head>
     <body>
 
@@ -156,9 +221,7 @@
                 <div class="container text-center py-3">
                     <div class="row justify-content-center">
                         <div class="col-6 col-md-4">
-                            <a href="popup_vereinsdaten.html">
-                                <button type="button" class="btn btn-secondary w-100" id="VereinsDatenAendern">Vereinsdaten ändern</button>
-                            </a>
+                            <button id="VereinsdatenAendern" type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalVereinsdaten">Vereinsdaten ändern</button>
                         </div>
                         <div class="col-6 col-md-4">
                             <a href=erzeugteGemaListe.html target="_blank">
@@ -172,6 +235,65 @@
                 </div>
             </div>
         </div>
-
+        <div class="bd-example bg-light">
+            <div class="modal fade" id="modalVereinsdaten" tabindex="-1" aria-labelledby="modalVereinsdatenLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Vereinsdaten</h5>
+                            <a href="gemaListe.html" class="text-decoration-none-text-body">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </a>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label" >Name der Kapelle</label>
+                                <input type="text" class="form-control" id="NameKapelle">
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label" >Name des Musikleiters</label>
+                                <br/>
+                                <label  class="form-label" >Vorname</label>
+                                <input type="text" class="form-control" id="MusikleiterVname">
+                                <label  class="form-label" >Nachname</label>
+                                <input type="text" class="form-control" id="MusikleiterNname">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" >Anschrift</label>   
+                                <br/>
+                                <label class="form-label" >Straße und Hausnummer</label>
+                                <input type="text" class="form-control" id="StrasseVerein">
+                                <label class="form-label" >Plz</label>
+                                <input type="text" class="form-control" id="PlzVerein">
+                                <label class="form-label" >Ort</label>
+                                <input type="text" class="form-control" id="OrtVerein">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Anzahl der Musizierenden</label>
+                                <input type="number" class="form-control" id="AnzMusizierende">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Art der Besetzung</label>
+                                <select class="form-select" aria-lable="Default select" id="Besetzung">
+                                    <option id="bo" value="Blasorchester" selected>Blasorchester</option>
+                                    <option id="bb" value="Big Band">Big Band</option>
+                                    <option id="ko" value="Kammerorchester">Kammerorchester</option>
+                                    <option id="po" value="Posaunenchor">Posaunenchor</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">GEMA-Mitglieds-Nr.</label>
+                                <input type="text" class="form-control" id="GemaMitgliedNr">
+                            </div>
+                            <div class="modal-footer">
+                                <a href="gemaListe.html" class="text-decoration-none-text-body">
+                                    <button type="button" class="btn btn-primary" id="btn_save_Vereinsdaten">speichern</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
