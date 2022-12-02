@@ -42,51 +42,82 @@ INSERT INTO Verlag (name) VALUES ('Studio-Verlag R.Seifert');
 -- nochmal nachschauen mit mehreren Fremdschlüsseln!
 INSERT INTO Lied (titel, komponist_id, bearbeiter_id, verlag_id) 
     VALUES('Bon Jovi-Rock Mix', 
-        (SELECT komponist_id FROM Komponist WHERE Komponist.name = 'Jon Bon Jovi'),
-        (SELECT bearbeiter_id FROM Bearbeiter WHERE Bearbeiter.name = 'Wolfgang Wössner'),
-        (SELECT verlag_id FROM Komponist WHERE verlag.name = ''));
+        (SELECT id FROM Komponist WHERE Komponist.name = 'Jon Bon Jovi'),
+        (SELECT id FROM Bearbeiter WHERE Bearbeiter.name = 'Wolfgang Wössner'),
+        (SELECT id FROM Verlag WHERE Verlag.name = ''));
 INSERT INTO Lied (titel, komponist_id, bearbeiter_id, verlag_id) 
     VALUES('CAN YOU ENGLISH PLEASE', 
-        (SELECT komponist_id FROM Komponist WHERE Komponist.name = 'Fäaschtbänkler'),
-        (SELECT bearbeiter_id FROM Bearbeiter WHERE Bearbeiter.name = 'Roman Würthrich'),
-        (SELECT verlag_id FROM Komponist WHERE verlag.name = ''));
+        (SELECT id FROM Komponist WHERE Komponist.name = 'Fäaschtbänkler'),
+        (SELECT id FROM Bearbeiter WHERE Bearbeiter.name = 'Roman Würthrich'),
+        (SELECT id FROM Verlag WHERE Verlag.name = ''));
 INSERT INTO Lied (titel, komponist_id, bearbeiter_id, verlag_id) 
     VALUES('Felize Navidad', 
-        (SELECT komponist_id FROM Komponist WHERE Komponist.name = 'José Feliciano'),
-        (SELECT bearbeiter_id FROM Bearbeiter WHERE Bearbeiter.name = 'Heinz Briegel'),
-        (SELECT verlag_id FROM Komponist WHERE verlag.name = 'Rundel'));
+        (SELECT id FROM Komponist WHERE Komponist.name = 'José Feliciano'),
+        (SELECT id FROM Bearbeiter WHERE Bearbeiter.name = 'Heinz Briegel'),
+        (SELECT id FROM Verlag WHERE Verlag.name = 'Rundel'));
 INSERT INTO Lied (titel, komponist_id, bearbeiter_id, verlag_id) 
     VALUES('Festmusik', 
-        (SELECT komponist_id FROM Komponist WHERE Komponist.name = 'Richard Wagner'),
-        (SELECT bearbeiter_id FROM Bearbeiter WHERE Bearbeiter.name = 'R. Seifert-Kressbronn'),
-        (SELECT verlag_id FROM Komponist WHERE verlag.name = 'Studio-Verlag R.Seifert'));
+        (SELECT id FROM Komponist WHERE Komponist.name = 'Richard Wagner'),
+        (SELECT id FROM Bearbeiter WHERE Bearbeiter.name = 'R. Seifert-Kressbronn'),
+        (SELECT id FROM Verlag WHERE Verlag.name = 'Studio-Verlag R.Seifert'));
 INSERT INTO Lied (titel, komponist_id, bearbeiter_id, verlag_id) 
     VALUES('Griechischer Wein', 
-        (SELECT komponist_id FROM Komponist WHERE Komponist.name = 'Udo Jürgens'),
-        (SELECT bearbeiter_id FROM Bearbeiter WHERE Bearbeiter.name = 'Erwin Jahreis'),
-        (SELECT verlag_id FROM Komponist WHERE verlag.name = 'Bernhard Geiger'));
+        (SELECT id FROM Komponist WHERE Komponist.name = 'Udo Jürgens'),
+        (SELECT id FROM Bearbeiter WHERE Bearbeiter.name = 'Erwin Jahreis'),
+        (SELECT id FROM Verlag WHERE Verlag.name = 'Bernhard Geiger'));
 INSERT INTO Lied (titel, komponist_id, bearbeiter_id, verlag_id) 
     VALUES('Polka Nr.37', 
-        (SELECT komponist_id FROM Komponist WHERE Komponist.name = 'Methodej Prajka'),
-        (SELECT bearbeiter_id FROM Bearbeiter WHERE Bearbeiter.name = 'Siegfried Rundel'),
-        (SELECT verlag_id FROM Komponist WHERE verlag.name = 'Rundel'));
+        (SELECT id FROM Komponist WHERE Komponist.name = 'Methodej Prajka'),
+        (SELECT id FROM Bearbeiter WHERE Bearbeiter.name = 'Siegfried Rundel'),
+        (SELECT id FROM Verlag WHERE Verlag.name = 'Rundel'));
 INSERT INTO Lied (titel, komponist_id, bearbeiter_id, verlag_id) 
     VALUES('Hard Rock Cafe', 
-        (SELECT komponist_id FROM Komponist WHERE Komponist.name = 'Carole King'),
-        (SELECT bearbeiter_id FROM Bearbeiter WHERE Bearbeiter.name = 'Erwin Jahreis'),
-        (SELECT verlag_id FROM Komponist WHERE verlag.name = 'Bernhard Geiger'));
+        (SELECT id FROM Komponist WHERE Komponist.name = 'Carole King'),
+        (SELECT id FROM Bearbeiter WHERE Bearbeiter.name = 'Erwin Jahreis'),
+        (SELECT id FROM Verlag WHERE Verlag.name = 'Bernhard Geiger'));
 INSERT INTO Lied (titel, komponist_id, bearbeiter_id, verlag_id) 
     VALUES('Hey Jude', 
-        (SELECT komponist_id FROM Komponist WHERE Komponist.name = 'J.Lennon, P.MCCartney'),
-        (SELECT bearbeiter_id FROM Bearbeiter WHERE Bearbeiter.name = 'Jörg Bollin'),
-        (SELECT verlag_id FROM Komponist WHERE verlag.name = 'Sony'));
+        (SELECT id FROM Komponist WHERE Komponist.name = 'J.Lennon, P.MCCartney'),
+        (SELECT id FROM Bearbeiter WHERE Bearbeiter.name = 'Jörg Bollin'),
+        (SELECT id FROM Verlag WHERE Verlag.name = 'Sony'));
 INSERT INTO Lied (titel, komponist_id, bearbeiter_id, verlag_id) 
     VALUES('Über sieben Brücken', 
-        (SELECT komponist_id FROM Komponist WHERE Komponist.name = 'Ulrich Swillims'),
-        (SELECT bearbeiter_id FROM Bearbeiter WHERE Bearbeiter.name = 'Manfred Schneider'),
-        (SELECT verlag_id FROM Komponist WHERE verlag.name = 'Rundel'));
+        (SELECT id FROM Komponist WHERE Komponist.name = 'Ulrich Swillims'),
+        (SELECT id FROM Bearbeiter WHERE Bearbeiter.name = 'Manfred Schneider'),
+        (SELECT id FROM Verlag WHERE Verlag.name = 'Rundel'));
 
+-- Anschrift
+INSERT INTO Anschrift (straße, hausnr, plz, ort)
+    VALUES ('Musterstraße', '1', '12345', 'Musterhausen');
+INSERT INTO Anschrift (straße, hausnr, plz, ort)
+    VALUES ('Musterweg', '2', '98765', 'Musterstadt');
+INSERT INTO Anschrift (straße, hausnr, plz, ort)
+    VALUES ('Mustereck', '3', '13580', 'Musterort');
 
+--Verein
+INSERT INTO Verein (name, musikleitervorname,musikleiternachname, anschrift_id, anzahlMusiker, besetzung, mitgliedsnr)
+    VALUES('Musterverein', 'Reiner', 'Zufall', 
+    (SELECT id FROM Anschrift WHERE Anschrift.straße = 'Musterstraße' and Anschrift.hausnr = '1' and Anschrift.plz = '12345' and Anschrift.ort = 'Musterhausen'),
+    15, 'Musterbesetzung', '1234'
+    );
+INSERT INTO Verein (name, musikleitervorname,musikleiternachname, anschrift_id, anzahlMusiker, besetzung, mitgliedsnr)
+    VALUES('Musterclub', 'Max', 'Mustermann', 
+    (SELECT id FROM Anschrift WHERE Anschrift.straße = 'Musterweg' and Anschrift.hausnr = '2' and Anschrift.plz = '98765' and Anschrift.ort = 'Musterstadt'),
+    20, 'Musterbesetzung', '3456'
+    );
 
+-- Veranstaltung
+INSERT INTO Veranstaltung (veranstalter, anschrift_id, art, datum, anfangsuhrzeit, enduhrzeit)
+    VALUES('Musterveranstalter', 
+    (SELECT id FROM Anschrift WHERE Anschrift.straße = 'Musterstraße' and Anschrift.hausnr = '1' and Anschrift.plz = '12345' and Anschrift.ort = 'Musterhausen'),
+    'Frühshoppen', '01.01.2023', '10:00', '11:00'
+    );
+
+-- Musikfolge
+INSERT INTO Musikfolge (vereins_id, veranstaltungs_id)
+    VALUES( 
+    (SELECT id FROM Verein WHERE Verein.name = 'Musterverein' and Verein.musikleitervorname = 'Reiner' and Verein.musikleiternachname = 'Zufall' and Verein.anzahlMusiker = 15 and Verein.besetzung = 'Musterbesetzung' and Verein.mitgliedsnr = '1234'),
+    (SELECT id FROM Veranstaltung WHERE Veranstaltung.veranstalter = 'Musterveranstalter' and Veranstaltung.art = 'Frühshoppen' and Veranstaltung.datum = '01.01.2023' and Veranstaltung.anfangsuhrzeit = '10:00' and Veranstaltung.enduhrzeit = '11:00')
+    );
 
 
