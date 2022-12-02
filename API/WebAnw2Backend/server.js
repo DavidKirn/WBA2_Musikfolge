@@ -59,6 +59,12 @@ try {
     var serviceRouter = require('./services/bearbeiter.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
+    var serviceRouter = require('./services/verlag.js');
+    app.use(TOPLEVELPATH, serviceRouter);
+
+    var serviceRouter = require('./services/anschrift.js');
+    app.use(TOPLEVELPATH, serviceRouter);
+
     // send default error message if no matching endpoint found
     app.use(function (request, response) {
         console.log('Error occured, 404, resource not found');
