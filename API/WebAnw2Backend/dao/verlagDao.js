@@ -1,6 +1,6 @@
 const helper = require('../helper.js');
 
-class KomponistDao {
+class VerlagDao {
 
     constructor(dbConnection) {
         this._conn = dbConnection;
@@ -11,7 +11,7 @@ class KomponistDao {
     }
 
     loadById(id) {
-        var sql = 'SELECT * FROM Komponist WHERE id=?';
+        var sql = 'SELECT * FROM Verlag WHERE id=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -22,7 +22,7 @@ class KomponistDao {
     }
 
     loadAll() {
-        var sql = 'SELECT * FROM Komponist';
+        var sql = 'SELECT * FROM Verlag';
         var statement = this._conn.prepare(sql);
         var result = statement.all();
 
@@ -33,7 +33,7 @@ class KomponistDao {
     }
 
     exists(id) {
-        var sql = 'SELECT COUNT(id) AS cnt FROM Komponist WHERE id=?';
+        var sql = 'SELECT COUNT(id) AS cnt FROM Verlag WHERE id=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
@@ -44,7 +44,7 @@ class KomponistDao {
     }
 
     create(name = '') {
-        var sql = 'INSERT INTO Komponist (name) VALUES (?)';
+        var sql = 'INSERT INTO Verlag (name) VALUES (?)';
         var statement = this._conn.prepare(sql);
         var params = [kennzeichnung];
         var result = statement.run(params);
@@ -56,7 +56,7 @@ class KomponistDao {
     }
 
     update(id, name = '') {
-        var sql = 'UPDATE Komponist SET name=? WHERE id=?';
+        var sql = 'UPDATE Verlag SET name=? WHERE id=?';
         var statement = this._conn.prepare(sql);
         var params = [name, id];
         var result = statement.run(params);
@@ -69,7 +69,7 @@ class KomponistDao {
 
     delete(id) {
         try {
-            var sql = 'DELETE FROM Komponist WHERE id=?';
+            var sql = 'DELETE FROM Verlag WHERE id=?';
             var statement = this._conn.prepare(sql);
             var result = statement.run(id);
 
@@ -83,8 +83,8 @@ class KomponistDao {
     }
 
     toString() {
-        console.log('KomponistDao [_conn=' + this._conn + ']');
+        console.log('VerlagDao [_conn=' + this._conn + ']');
     }
 }
 
-module.exports = KomponistDao;
+module.exports = VerlagDao;
