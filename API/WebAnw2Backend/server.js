@@ -62,6 +62,9 @@ try {
     var serviceRouter = require('./services/verlag.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
+    var serviceRouter = require('./services/lied.js');
+    app.use(TOPLEVELPATH, serviceRouter);
+
     var serviceRouter = require('./services/anschrift.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
