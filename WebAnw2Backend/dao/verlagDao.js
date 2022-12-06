@@ -46,7 +46,7 @@ class VerlagDao {
     create(name = '') {
         var sql = 'INSERT INTO Verlag (name) VALUES (?)';
         var statement = this._conn.prepare(sql);
-        var params = [kennzeichnung];
+        var params = [name];
         var result = statement.run(params);
 
         if (result.changes != 1) 
