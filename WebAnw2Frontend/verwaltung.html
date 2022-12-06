@@ -6,6 +6,7 @@
         <title>Musikfolge</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <link href="stylesheet.css" rel="stylesheet" type="text/css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     </head>
     <body>
 
@@ -88,23 +89,97 @@
             <div class="container text-center py-3">
                 <div class="row justify-content-center">
                     <div class="col-4 col-md-3">
-                        <a href="popup_komponist_bearbeiten.html">
-                            <button type="button" class="btn btn-secondary w-100" id="bearbeiten">Bearbeiten</button>
-                        </a>
+                            <button type="button" class="btn btn-secondary w-100" id="btn-edit" data-bs-toggle="modal" data-bs-target="#modalEditComposer">Bearbeiten</button>
                     </div>
                     <div class="col-4 col-md-3">
-                        <a href="popup_komponist_hinzufuegen.html">
-                            <button type="button" class="btn btn-secondary w-100" id="hinzufuegen">Hinzufügen</button>
-                        </a>
+                            <button type="button" class="btn btn-secondary w-100" id="btn-add" data-bs-toggle="modal" data-bs-target="#modalAddComposer">Hinzufügen</button>
                     </div>
                     <div class="col-4 col-md-3">
-                        <a href="popup_komponist_loeschen.html">
-                            <button type="button" class="btn btn-secondary w-100" id="loeschen">Löschen</button>
-                        </a>
+                            <button type="button" class="btn btn-secondary w-100" id="btn-delete" data-bs-toggle="modal" data-bs-target="#modalDeleteComposer">Löschen</button>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center pt-3">
                     <a class="text-decoration-none text-white" href="impressum.html">Impressum</a>
+                </div>
+            </div>
+        </div>
+        <!-- Modals-->
+        <!-- Modal Edit Composer-->
+        <div class="bd-example bg-light">
+            <div class="modal fade" id="modalEditComposer" tabindex="-1" aria-labelledby="modalEditComposerLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Komponist bearbeiten</h5>
+                            <a href="verwaltung.html">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </a>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Komponist</label>
+                                <input type="text" class="form-control" value="Richard Wagner">
+                            </div>
+
+                            <div class="modal-footer">
+                                <a href="verwaltung.html" class="text-decoration-none-text-body">
+                                    <button type="button" class="btn btn-primary">Ändern</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Add Composer-->
+        <div class="bd-example bg-light">
+            <div class="modal fade" id="modalAddComposer" tabindex="-1" aria-labelledby="modalAddComposerLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Komponist hinzufügen</h5>
+                            <a href="verwaltung.html">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </a>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Komponist</label>
+                                <input type="text" class="form-control" id="input_add_composer">
+                            </div>
+                            <div class="modal-footer">
+                                <a href="verwaltung.html" class="text-decoration-none-text-body">
+                                    <button type="button" class="btn btn-primary" id="CreateComposer">Hinzufügen</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Delete Composer-->
+        <div class="bd-example bg-light">
+            <div class="modal fade" id="modalDeleteComposer" tabindex="-1" aria-labelledby="modalDeleteComposerLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Komponist löschen</h5>
+                            <a href="verwaltung.html" class="text-decoration-none-text-body">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </a>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3" id="publisher-to-delete">
+                                <label class="form-label">Komponist</label> 
+                                <p>Richard Wagner</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="verwaltung.html" class="text-decoration-none-text-body">
+                                    <button type="button" class="btn btn-primary" id="btn_delete_composer">Löschen bestätigen</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

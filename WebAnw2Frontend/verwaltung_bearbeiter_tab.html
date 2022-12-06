@@ -86,23 +86,96 @@
                 <div class="container text-center py-3">
                     <div class="row justify-content-center">
                         <div class="col-4 col-md-3">
-                            <a href="popup_bearbeiter_bearbeiten.html">
-                                <button type="button" class="btn btn-secondary w-100" id="bearbeiten">Bearbeiten</button>
-                            </a>
+                            <button id="btn-edit" type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalEditEditor">Bearbeiten</button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <a href="popup_bearbeiter_hinzufuegen.html">
-                                <button type="button" class="btn btn-secondary w-100" id="hinzufuegen">Hinzufügen</button>
-                            </a>
+                            <button id="btn-add" type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalAddEditor">Hinzufügen</button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <a href="popup_bearbeiter_loeschen.html">
-                                <button type="button" class="btn btn-secondary w-100" id="loeschen">Löschen</button>
-                            </a>
+                            <button id="btn-delete" type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalDeleteEditor">Löschen</button>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center pt-3">
                         <a class="text-decoration-none text-white" href="impressum.html">Impressum</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Edit Editor -->
+        <div class="bd-example bg-light">
+            <div class="modal fade" id="modalEditEditor" tabindex="-1" aria-labelledby="modalEditEditorLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Bearbeiter bearbeiten</h5>
+                            <a href="verwaltung_bearbeiter_tab.html">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </a>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Bearbeiter</label>
+                                <input type="text" class="form-control" value ="Siegfried Rundel">
+                            </div>
+
+                            <div class="modal-footer">
+                                <a href="verwaltung_bearbeiter_tab.html" class="text-decoration-none-text-body">
+                                    <button type="button" class="btn btn-primary">Ändern</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Add Editor -->
+        <div class="bd-example bg-light">
+            <div class="modal fade" id="modalAddEditor" tabindex="-1" aria-labelledby="modalAddEditorLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Bearbeiter hinzufügen</h5>
+                            <a href="verwaltung_bearbeiter_tab.html">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </a>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Bearbeiter</label>
+                                <input type="text" class="form-control" id="input_add_publisher">
+                            </div>
+                            <div class="modal-footer">
+                                <a href="verwaltung_bearbeiter_tab.html" class="text-decoration-none-text-body">
+                                    <button type="button" class="btn btn-primary" id="CreateEditor">Hinzufügen</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Delete Editor -->
+        <div class="bd-example bg-light">
+            <div class="modal fade" id="modalDeleteEditor" tabindex="-1" aria-labelledby="modalDeleteEditorLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Bearbeiter löschen</h5>
+                            <a href="verwaltung_bearbeiter_tab.html" class="text-decoration-none-text-body">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </a>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3" id="publisher-to-delete">
+                                <label class="form-label">Bearbeiter</label>
+                                <p>Siegfried Rundel</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="verwaltung_bearbeiter_tab.html" class="text-decoration-none-text-body">
+                                    <button type="button" class="btn btn-primary" id="btn_delete_publisher">Löschen bestätigen</button>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
