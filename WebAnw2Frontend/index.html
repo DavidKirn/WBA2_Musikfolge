@@ -48,6 +48,44 @@
                 </div>
             </div>
         </div>
+        <!-- Edit title -->
+        <div class="modal fade" id="modalTitleEdit" tabindex="-1" aria-labelledby="modalTitleEditLable" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalTitleEditLable">Titel hinzufügen</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Titel</label>
+                            <input type="text" class="form-control" id="inputTitelPopupTitleEdit">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Komponist</label>
+                            <select class="form-select" id="selectKomponistPopupTitleEdit">
+                                <option value="null">keine Angabe</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bearbeiter</label>
+                            <select class="form-select" id="selectBearbeiterPopupTitleEdit">
+                                <option value="null">keine Angabe</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Verlag</label>
+                            <select class="form-select" id="selectVerlagPopupTitleEdit">
+                                <option value="null">kein Angabe</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnPopupTitleEdit">Änderungen speichern</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Delete title -->
         <div class="modal fade" id="modalTitleDelete" tabindex="-1" aria-labelledby="modalTitleDeleteLable" aria-hidden="true">
             <div class="modal-dialog">
@@ -133,9 +171,7 @@
                 <div class="container text-center py-3">
                     <div class="row justify-content-center">
                         <div class="col-4 col-md-3">
-                            <a href="popup_titel_bearbeiten.html">
-                                <button type="button" class="btn btn-secondary w-100" id="btnEdit">Bearbeiten</button>
-                            </a>
+                            <button type="button" class="btn btn-secondary w-100" id="btnEdit">Bearbeiten</button>
                         </div>
                         <div class="col-4 col-md-3">
                             <button type="button" class="btn btn-secondary w-100" id="btnAdd">Hinzufügen</button>
@@ -155,16 +191,26 @@
         
         <script>
             const tableTitles = document.querySelector("#table-titles");
+
             const btnEdit = document.querySelector("#btnEdit");
             const btnAdd = document.querySelector("#btnAdd");
             const btnDelete = document.querySelector("#btnDelete");
             const btnPopupTitleAdd = document.querySelector("#btnPopupTitleAdd");
+
             const inputTitelPopupTitleAdd = document.querySelector("#inputTitelPopupTitleAdd");
+            const inputTitelPopupTitleEdit = document.querySelector("#inputTitelPopupTitleEdit");
+
             const selectKomponistPopupTitleAdd = document.querySelector("#selectKomponistPopupTitleAdd");
             const selectBearbeiterPopupTitleAdd = document.querySelector("#selectBearbeiterPopupTitleAdd");
             const selectVerlagPopupTitleAdd = document.querySelector("#selectVerlagPopupTitleAdd");
+            const selectKomponistPopupTitleEdit = document.querySelector("#selectKomponistPopupTitleEdit");
+            const selectBearbeiterPopupTitleEdit = document.querySelector("#selectBearbeiterPopupTitleEdit");
+            const selectVerlagPopupTitleEdit = document.querySelector("#selectVerlagPopupTitleEdit");
+
             const modalTitleAdd = new bootstrap.Modal("#modalTitleAdd");
+            const modalTitleEdit = new bootstrap.Modal("#modalTitleEdit");
             const modalTitleDelete = new bootstrap.Modal("#modalTitleDelete");
+
             const valueModalTitleDelete = document.querySelector("#valueModalTitleDelete");
 
             window.addEventListener("DOMContentLoaded", (event) => {
@@ -175,6 +221,15 @@
                     modalTitleAdd.show();
                 });
 
+                btnEdit.addEventListener("click", (event) => {
+                    let selectedTitle = getSelectedItem();
+                    inputTitelPopupTitleEdit.value = selectedTitle.titel;
+                    selectKomponistPopupTitleEdit.value = selectedTitle.komponist_id;
+                    selectBearbeiterPopupTitleEdit.value = selectedTitle.bearbeiter_id;
+                    selectVerlagPopupTitleEdit.value = selectedTitle.verlag_id;
+                    modalTitleEdit.show();
+                });
+
                 btnDelete.addEventListener("click", (event) => {
                     let selectedTitle = getSelectedItem();
                     valueModalTitleDelete.innerText = selectedTitle.titel;
@@ -183,6 +238,10 @@
 
                 btnPopupTitleAdd.addEventListener("click", (event) => {
                     addTitle();
+                });
+
+                btnPopupTitleEdit.addEventListener("click", (event) => {
+                    editTitle();
                 });
 
                 btnPopupTitleDelete.addEventListener("click", (event) => {
@@ -198,20 +257,23 @@
                 // Create table row elements
                 renderTableEntries(titlesArr);
 
-                // Load "Komponisten" from Backend and add them to select element
+                // Load "Komponisten" from Backend and add them to select elements
                 const kompArr = await fetch('http://localhost:8000/api/komponist/alle')
                     .then((response) => response.json());
                 addOptionsToSelectElement(selectKomponistPopupTitleAdd, kompArr);
+                addOptionsToSelectElement(selectKomponistPopupTitleEdit, kompArr);
 
-                // Load "Bearbeiter" from Backend and add them to select element
+                // Load "Bearbeiter" from Backend and add them to select elements
                 const bearArr = await fetch('http://localhost:8000/api/bearbeiter/alle')
                     .then((response) => response.json());
                 addOptionsToSelectElement(selectBearbeiterPopupTitleAdd, bearArr);
+                addOptionsToSelectElement(selectBearbeiterPopupTitleEdit, bearArr);
                 
-                // Load "Verlag" from Backend and add them to select element
+                // Load "Verlag" from Backend and add them to select elements
                 const verlagArr = await fetch('http://localhost:8000/api/verlag/alle')
                     .then((response) => response.json());
                 addOptionsToSelectElement(selectVerlagPopupTitleAdd, verlagArr);
+                addOptionsToSelectElement(selectVerlagPopupTitleEdit, verlagArr);
 
                 updateButtonStates();
             }
@@ -260,8 +322,11 @@
 
                     tr.dataset.id = title.id;
                     tr.dataset.titel = title.titel;
+                    tr.dataset.komponist_id = title.komponist_id;
                     tr.dataset.komponist_name = title.komponist_name;
+                    tr.dataset.bearbeiter_id = title.bearbeiter_id;
                     tr.dataset.bearbeiter_name = title.bearbeiter_name;
+                    tr.dataset.verlag_id = title.verlag_id;
                     tr.dataset.verlag_name = title.verlag_name;
 
                     tableTitles.appendChild(tr);
@@ -304,7 +369,7 @@
                 bodyObj = {};
 
                 if (inputTitelPopupTitleAdd.value.trim() == "") {
-                    // Fehlermeldung: Kein Titel eingegeben
+                    // TODO: Fehlermeldung: Kein Titel eingegeben
                     return;
                 }
                 bodyObj.titel = inputTitelPopupTitleAdd.value.trim();
@@ -341,6 +406,53 @@
                 // TODO: Titel in Tabelle anzeigen
                 console.log("Titel hinzufügen Response: " + response.status);
                 modalTitleAdd.hide();
+            }
+
+            async function editTitle() {
+                bodyObj = {};
+
+                let selectedTitle = getSelectedItem();
+
+                bodyObj.id = selectedTitle.id;
+
+                if (inputTitelPopupTitleEdit.value.trim() == "") {
+                    // TODO: Fehlermeldung: Kein Titel eingegeben
+                    return;
+                }
+                bodyObj.titel = inputTitelPopupTitleEdit.value.trim();
+
+                if (selectKomponistPopupTitleEdit.value == "null") {
+                    bodyObj.komponistid = null;
+                } else {
+                    bodyObj.komponistid = selectKomponistPopupTitleEdit.value;
+                }
+
+                if (selectBearbeiterPopupTitleEdit.value == "null") {
+                    bodyObj.bearbeiterid = null;
+                } else {
+                    bodyObj.bearbeiterid = selectBearbeiterPopupTitleEdit.value;
+                }
+
+                if (selectVerlagPopupTitleEdit.value == "null") {
+                    bodyObj.verlagid = null;
+                } else {
+                    bodyObj.verlagid = selectVerlagPopupTitleEdit.value;
+                }
+
+                console.log(JSON.stringify(bodyObj));
+
+                const response = await fetch("http://localhost:8000/api/lied", {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(bodyObj)
+                });
+
+                // TODO: Meldung anzeigen ob bearbeiten erfolgreich war oder nicht
+                // TODO: Titel in Tabelle aktualisieren
+                console.log("Titel bearbeiten Response: " + response.status);
+                modalTitleEdit.hide();
             }
 
             async function deleteTitle() {

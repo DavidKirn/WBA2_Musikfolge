@@ -62,7 +62,7 @@ class LiedDao {
 
         var sql = 'UPDATE Lied SET titel=?, komponist_id=?, bearbeiter_id=?, verlag_id=? WHERE id=?';
         var statement = this._conn.prepare(sql);
-        var params = [titel, komponistid, bearbeiterid, verlagid];
+        var params = [titel, komponistid, bearbeiterid, verlagid, id];
         var result = statement.run(params);
 
         if (result.changes != 1) 
