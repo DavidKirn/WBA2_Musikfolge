@@ -46,7 +46,7 @@ class BearbeiterDao {
     create(name = '') {
         var sql = 'INSERT INTO Bearbeiter (name) VALUES (?)';
         var statement = this._conn.prepare(sql);
-        var params = [kennzeichnung];
+        var params = [name];
         var result = statement.run(params);
 
         if (result.changes != 1) 
