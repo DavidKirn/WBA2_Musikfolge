@@ -47,7 +47,7 @@ class LiedDao {
     }
 
     create(titel='', komponistid=0, bearbeiterid=0, verlagid=0) {
-        var sql = 'INSERT INTO Lied (titel, komponistid, bearbeiterid, verlagid ) VALUES (?,?,?,?)';
+        var sql = 'INSERT INTO Lied (titel, komponist_id, bearbeiter_id, verlag_id ) VALUES (?,?,?,?)';
         var statement = this._conn.prepare(sql);
         var params = [titel, komponistid, bearbeiterid, verlagid];
         var result = statement.run(params);
@@ -60,7 +60,7 @@ class LiedDao {
 
     update(id, titel='', komponistid=0, bearbeiterid=0, verlagid=0) {
 
-        var sql = 'UPDATE Lied SET titel=?, komponisid=?, bearbeiterid=?, verlagid=? WHERE id=?';
+        var sql = 'UPDATE Lied SET titel=?, komponist_id=?, bearbeiter_id=?, verlag_id=? WHERE id=?';
         var statement = this._conn.prepare(sql);
         var params = [titel, komponistid, bearbeiterid, verlagid];
         var result = statement.run(params);
