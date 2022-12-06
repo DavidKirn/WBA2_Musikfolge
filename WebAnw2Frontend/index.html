@@ -103,111 +103,19 @@
                 init();
             });
 
-            const titles = [
-                {
-                    id: "1",
-                    titel: "Bon Jovi-Roch Mix",
-                    komponist: "Jon Bon Jovi",
-                    bearbeiter: "Wolfgang Wössner",
-                    verlag: ""
-                },
-                {
-                    id: "2",
-                    titel: "CAN YOU ENGLISH PLEASE",
-                    komponist: "Fäaschtbänkler",
-                    bearbeiter: "Roman Wüthrich",
-                    verlag: ""
-                },
-                {
-                    id: "3",
-                    titel: "Felize Navidad",
-                    komponist: "José Feliciano",
-                    bearbeiter: "Heinz Briegel",
-                    verlag: "Rundel"
-                },
-                {
-                    id: "4",
-                    titel: "Festmusik",
-                    komponist: "Richard Wagner",
-                    bearbeiter: "R. Seifert-Kressbronn",
-                    verlag: "Studio-Verlag R.Seifert"
-                },
-                {
-                    id: "5",
-                    titel: "Griechischer Wein",
-                    komponist: "Udo Jürgens",
-                    bearbeiter: "Erwin Jahreis",
-                    verlag: "Berhard Geiger"
-                },
-                {
-                    id: "6",
-                    titel: "Polka Nr.37",
-                    komponist: "Methodej Prajka",
-                    bearbeiter: "Siegfried Rundel",
-                    verlag: "Rundel"
-                },
-                {
-                    id: "7",
-                    titel: "Hard Rock Cafe",
-                    komponist: "Carole King",
-                    bearbeiter: "Erwin Jahreis",
-                    verlag: "Berhard Geiger"
-                },
-                {
-                    id: "8",
-                    titel: "Hey Jude",
-                    komponist: "J.Lennon, P.MCCartney",
-                    bearbeiter: "Jörg Bollin",
-                    verlag: "Sony"
-                },
-                {
-                    id: "9",
-                    titel: "Über sieben Brücken",
-                    komponist: "Ulrich Swillms",
-                    bearbeiter: "Manfred Schneider",
-                    verlag: "Rundel"
-                },
-                {
-                    id: "10",
-                    titel: "Polka Nr.37",
-                    komponist: "Methodej Prajka",
-                    bearbeiter: "Siegfried Rundel",
-                    verlag: "Rundel"
-                },
-                {
-                    id: "11",
-                    titel: "Hard Rock Cafe",
-                    komponist: "Carole King",
-                    bearbeiter: "Erwin Jahreis",
-                    verlag: "Berhard Geiger"
-                },
-                {
-                    id: "12",
-                    titel: "Hey Jude",
-                    komponist: "J.Lennon, P.MCCartney",
-                    bearbeiter: "Jörg Bollin",
-                    verlag: "Sony"
-                },
-                {
-                    id: "13",
-                    titel: "Über sieben Brücken",
-                    komponist: "Ulrich Swillms",
-                    bearbeiter: "Manfred Schneider",
-                    verlag: "Rundel"
-                }
-            ];
-
-            function init() {
-                // TODO: Load titles from Backend
+            async function init() {
+                // Load titles from Backend
+                const titlesArr = await fetch('http://localhost:8000/api/lied/alle')
+                    .then((response) => response.json());
 
                 // Create table row elements
-                renderTableEntries();
+                renderTableEntries(titlesArr);
 
                 updateButtonStates();
             }
 
-            function renderTableEntries() {
-                titles.forEach((title) => {
+            function renderTableEntries(titlesArr) {
+                titlesArr.forEach((title) => {
                     let tr = document.createElement("tr");
                     tr.setAttribute("id", "table-row-title-" + title.id);
                     tr.addEventListener("click", () => {
@@ -237,15 +145,15 @@
                     tr.appendChild(tdTitel);
 
                     let tdKomponist = document.createElement("td");
-                    tdKomponist.innerText = title.komponist;
+                    tdKomponist.innerText = title.komponist_name;
                     tr.appendChild(tdKomponist);
 
                     let tdBearbeiter = document.createElement("td");
-                    tdBearbeiter.innerText = title.bearbeiter;
+                    tdBearbeiter.innerText = title.bearbeiter_name;
                     tr.appendChild(tdBearbeiter);
 
                     let tdVerlag = document.createElement("td");
-                    tdVerlag.innerText = title.verlag;
+                    tdVerlag.innerText = title.verlag_name;
                     tr.appendChild(tdVerlag);
 
                     tableTitles.appendChild(tr);
@@ -253,22 +161,22 @@
             }
 
             function updateButtonStates() {
-                    let selectedElements = document.querySelectorAll("tr.selected");
+                let selectedElements = document.querySelectorAll("tr.selected");
 
-                    if (selectedElements.length == 0) {
-                        btnEdit.disabled = true;
-                        btnAdd.disabled = false;
-                        btnDelete.disabled = true;
-                    } else if (selectedElements.length == 1) {
-                        btnEdit.disabled = false;
-                        btnAdd.disabled = false;
-                        btnDelete.disabled = false;
-                    } else if (selectedElements.length > 1) {
-                        btnEdit.disabled = true;
-                        btnAdd.disabled = false;
-                        btnDelete.disabled = false;
-                    }
+                if (selectedElements.length == 0) {
+                    btnEdit.disabled = true;
+                    btnAdd.disabled = false;
+                    btnDelete.disabled = true;
+                } else if (selectedElements.length == 1) {
+                    btnEdit.disabled = false;
+                    btnAdd.disabled = false;
+                    btnDelete.disabled = false;
+                } else if (selectedElements.length > 1) {
+                    btnEdit.disabled = true;
+                    btnAdd.disabled = false;
+                    btnDelete.disabled = false;
                 }
+            }
         </script>
     </body>
 </html>
