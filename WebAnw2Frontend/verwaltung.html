@@ -64,80 +64,126 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="komponist-tab-pane" role="tabpanel" aria-labelledby="komponist-tab" tabindex="0">
 
-                        <table class="table table-striped table-hover" id="Musiktitel">
-                            <tr class="table-secondary">
-                                <th style="width: 4%"></th>
-                                <th>Komponist</th>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value=""></td>
-                                <td>Jon Bon Jovi</td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value=""></td>
-                                <td>Fäaschtbänkler</td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value=""></td>
-                                <td>José Feliciano</td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value=""></td>
-                                <td>Richard Wagner</td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value=""></td>
-                                <td>Udo Jürgens</td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value=""></td>
-                                <td>Methodej Prajka</td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value=""></td>
-                                <td>Carole King</td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value=""></td>
-                                <td>J.Lennon, P.MCCartney</td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value=""></td>
-                                <td>Ulrich Swillms</td>
-                            </tr>
-                        </table>
-
-                    </div>
+                        <div class="content-scroll-table container">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr class="table-secondary">
+                                        <th></th>
+                                        <th>Komponist</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-komponist">
+                                </tbody>
+                            </table>
+                        </div>
+ 
                     <div class="tab-pane fade" id="bearbeiter-tab-pane" role="tabpanel" aria-labelledby="bearbeiter-tab" tabindex="0"></div>
                     <div class="tab-pane fade" id="verlag-tab-pane" role="tabpanel" aria-labelledby="verlag-tab" tabindex="0"></div>
                 </div>
             </div>
 
-            <div class="footer bg-dark">
-                <div class="container text-center py-3">
-                    <div class="row justify-content-center">
-                        <div class="col-4 col-md-3">
-                            <a href="popup_komponist_bearbeiten.html">
-                                <button type="button" class="btn btn-secondary w-100" id="bearbeiten">Bearbeiten</button>
-                            </a>
-                        </div>
-                        <div class="col-4 col-md-3">
-                            <a href="popup_komponist_hinzufuegen.html">
-                                <button type="button" class="btn btn-secondary w-100" id="hinzufuegen">Hinzufügen</button>
-                            </a>
-                        </div>
-                        <div class="col-4 col-md-3">
-                            <a href="popup_komponist_loeschen.html">
-                                <button type="button" class="btn btn-secondary w-100" id="loeschen">Löschen</button>
-                            </a>
-                        </div>
+            
+        </div>
+        <div class="footer bg-dark">
+            <div class="container text-center py-3">
+                <div class="row justify-content-center">
+                    <div class="col-4 col-md-3">
+                        <a href="popup_komponist_bearbeiten.html">
+                            <button type="button" class="btn btn-secondary w-100" id="bearbeiten">Bearbeiten</button>
+                        </a>
                     </div>
-                    <div class="d-flex justify-content-center pt-3">
-                        <a class="text-decoration-none text-white" href="impressum.html">Impressum</a>
+                    <div class="col-4 col-md-3">
+                        <a href="popup_komponist_hinzufuegen.html">
+                            <button type="button" class="btn btn-secondary w-100" id="hinzufuegen">Hinzufügen</button>
+                        </a>
                     </div>
+                    <div class="col-4 col-md-3">
+                        <a href="popup_komponist_loeschen.html">
+                            <button type="button" class="btn btn-secondary w-100" id="loeschen">Löschen</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center pt-3">
+                    <a class="text-decoration-none text-white" href="impressum.html">Impressum</a>
                 </div>
             </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        
+        <script>
+            const tableKomponisten = document.querySelector("#table-komponist");
+            const btnEdit = document.querySelector("#btn-edit");
+            const btnAdd = document.querySelector("#btn-add");
+            const btnDelete = document.querySelector("#btn-delete");
+
+            window.addEventListener("DOMContentLoaded", (event) => {
+                init();
+            });
+
+            async function init() {
+                // Load komponist from Backend
+                const komponistArr = await fetch('http://localhost:8000/api/komponist/alle')
+                    .then((response) => response.json());
+
+                // Create table row elements
+                renderTableEntries(komponistArr);
+
+                updateButtonStates();
+            }
+
+            function renderTableEntries(komponistArr) {
+                komponistArr.forEach((komponist) => {
+                    let tr = document.createElement("tr");
+                    tr.setAttribute("id", "table-row-komponist-" + komponist.id);
+                    tr.addEventListener("click", () => {
+                        const checkbox = document.querySelector("#checkbox-komponist-" + komponist.id);
+
+                        if (tr.classList.contains("selected")) {
+                            tr.classList.remove("selected");
+                            checkbox.checked = false;
+                        } else {
+                            tr.classList.add("selected");
+                            checkbox.checked = true;
+                        }
+
+                        updateButtonStates();
+                    });
+                    
+                    let tdCheckbox = document.createElement("td");
+                    let inputCheckbox = document.createElement("input");
+                    inputCheckbox.classList.add("form-check-input");
+                    inputCheckbox.setAttribute("type", "checkbox");
+                    inputCheckbox.setAttribute("id", "checkbox-komponist-" + komponist.id);
+                    tdCheckbox.appendChild(inputCheckbox);
+                    tr.appendChild(tdCheckbox);
+
+                    let tdKomponist = document.createElement("td");
+                    tdKomponist.innerText = komponist.name;
+                    tr.appendChild(tdKomponist);
+
+                    tableKomponisten.appendChild(tr);
+                });
+            }
+
+            function updateButtonStates() {
+                let selectedElements = document.querySelectorAll("tr.selected");
+
+                if (selectedElements.length == 0) {
+                    btnEdit.disabled = true;
+                    btnAdd.disabled = false;
+                    btnDelete.disabled = true;
+                } else if (selectedElements.length == 1) {
+                    btnEdit.disabled = false;
+                    btnAdd.disabled = false;
+                    btnDelete.disabled = false;
+                } else if (selectedElements.length > 1) {
+                    btnEdit.disabled = true;
+                    btnAdd.disabled = false;
+                    btnDelete.disabled = false;
+                }
+            }
+        </script>
 
     </body>
 </html>
