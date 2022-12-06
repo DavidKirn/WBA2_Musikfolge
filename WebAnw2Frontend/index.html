@@ -48,6 +48,30 @@
                 </div>
             </div>
         </div>
+        <!-- Delete title -->
+        <div class="modal fade" id="modalTitleDelete" tabindex="-1" aria-labelledby="modalTitleDeleteLable" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalTitleDeleteLable">Titel löschen</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <span>
+                                Möchten Sie den Titel <strong id="valueModalTitleDelete"></strong> wirklich löschen?
+                                <br>
+                                Dieser Vorgang kann nicht rückgängig gemacht werden!
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                        <button type="button" class="btn btn-danger" id="btnPopupTitleDelete">Löschen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="wrapper">
             <div class="header bg-dark">
@@ -110,16 +134,14 @@
                     <div class="row justify-content-center">
                         <div class="col-4 col-md-3">
                             <a href="popup_titel_bearbeiten.html">
-                                <button type="button" class="btn btn-secondary w-100" id="btn-edit">Bearbeiten</button>
+                                <button type="button" class="btn btn-secondary w-100" id="btnEdit">Bearbeiten</button>
                             </a>
                         </div>
                         <div class="col-4 col-md-3">
-                            <button type="button" class="btn btn-secondary w-100" id="btn-add">Hinzufügen</button>
+                            <button type="button" class="btn btn-secondary w-100" id="btnAdd">Hinzufügen</button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <a href=popup_titel_loeschen.html>
-                                <button type="button" class="btn btn-secondary w-100" id="btn-delete">Löschen</button>
-                            </a>
+                            <button type="button" class="btn btn-secondary w-100" id="btnDelete">Löschen</button>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center pt-3">
@@ -133,15 +155,17 @@
         
         <script>
             const tableTitles = document.querySelector("#table-titles");
-            const btnEdit = document.querySelector("#btn-edit");
-            const btnAdd = document.querySelector("#btn-add");
-            const btnDelete = document.querySelector("#btn-delete");
+            const btnEdit = document.querySelector("#btnEdit");
+            const btnAdd = document.querySelector("#btnAdd");
+            const btnDelete = document.querySelector("#btnDelete");
             const btnPopupTitleAdd = document.querySelector("#btnPopupTitleAdd");
             const inputTitelPopupTitleAdd = document.querySelector("#inputTitelPopupTitleAdd");
             const selectKomponistPopupTitleAdd = document.querySelector("#selectKomponistPopupTitleAdd");
             const selectBearbeiterPopupTitleAdd = document.querySelector("#selectBearbeiterPopupTitleAdd");
             const selectVerlagPopupTitleAdd = document.querySelector("#selectVerlagPopupTitleAdd");
-            const modalTitleAdd = new bootstrap.Modal('#modalTitleAdd');
+            const modalTitleAdd = new bootstrap.Modal("#modalTitleAdd");
+            const modalTitleDelete = new bootstrap.Modal("#modalTitleDelete");
+            const valueModalTitleDelete = document.querySelector("#valueModalTitleDelete");
 
             window.addEventListener("DOMContentLoaded", (event) => {
                 init();
@@ -151,8 +175,18 @@
                     modalTitleAdd.show();
                 });
 
+                btnDelete.addEventListener("click", (event) => {
+                    let selectedTitle = getSelectedItem();
+                    valueModalTitleDelete.innerText = selectedTitle.titel;
+                    modalTitleDelete.show();
+                });
+
                 btnPopupTitleAdd.addEventListener("click", (event) => {
                     addTitle();
+                });
+
+                btnPopupTitleDelete.addEventListener("click", (event) => {
+                    deleteTitle();
                 });
             });
 
@@ -224,6 +258,12 @@
                     tdVerlag.innerText = title.verlag_name;
                     tr.appendChild(tdVerlag);
 
+                    tr.dataset.id = title.id;
+                    tr.dataset.titel = title.titel;
+                    tr.dataset.komponist_name = title.komponist_name;
+                    tr.dataset.bearbeiter_name = title.bearbeiter_name;
+                    tr.dataset.verlag_name = title.verlag_name;
+
                     tableTitles.appendChild(tr);
                 });
             }
@@ -242,8 +282,13 @@
                 } else if (selectedElements.length > 1) {
                     btnEdit.disabled = true;
                     btnAdd.disabled = false;
-                    btnDelete.disabled = false;
+                    btnDelete.disabled = true; // TODO: Mehr Elemente auf einmal löschen ermöglichen
                 }
+            }
+
+            function getSelectedItem() {
+                let selectedElement = document.querySelector("tr.selected");
+                return selectedElement.dataset;
             }
 
             function addOptionsToSelectElement(selectElement, optionsArr) {
@@ -296,6 +341,19 @@
                 // TODO: Titel in Tabelle anzeigen
                 console.log("Titel hinzufügen Response: " + response.status);
                 modalTitleAdd.hide();
+            }
+
+            async function deleteTitle() {
+                let selectedTitle = getSelectedItem();
+
+                const response = await fetch("http://localhost:8000/api/lied/" + selectedTitle.id, {
+                    method: 'DELETE'
+                });
+
+                // TODO: Meldung anzeigen ob löschen erfolgreich war oder nicht
+                // TODO: Titel aus Tabelle entfernen
+                console.log("Titel löschen Response: " + response.status);
+                modalTitleDelete.hide();
             }
         </script>
     </body>
