@@ -341,6 +341,11 @@
                 tr.replaceWith(createTableEntry(titleObj));
             }
 
+            function deleteTableEntry(titleObj) {
+                let tr = document.querySelector("#table-row-title-" + titleObj.id);
+                tr.remove();
+            }
+
             function updateButtonStates() {
                 let selectedElements = document.querySelectorAll("tr.selected");
 
@@ -480,11 +485,17 @@
 
                 const response = await fetch("http://localhost:8000/api/lied/" + selectedTitle.id, {
                     method: 'DELETE'
-                });
+                })
+                .then((response) => response.json().then((data) => (
+                    {
+                        status: response.status,
+                        body: data
+                    }
+                )));
 
                 // TODO: Meldung anzeigen ob löschen erfolgreich war oder nicht
-                // TODO: Titel aus Tabelle entfernen
                 console.log("Titel löschen Response: " + response.status);
+                deleteTableEntry(response.body.eintrag);
                 modalTitleDelete.hide();
             }
         </script>
