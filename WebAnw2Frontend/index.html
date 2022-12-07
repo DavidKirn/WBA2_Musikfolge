@@ -218,6 +218,9 @@
                 
                 btnAdd.addEventListener("click", (event) => {
                     inputTitelPopupTitleAdd.value = "";
+                    selectKomponistPopupTitleAdd.value = null;
+                    selectBearbeiterPopupTitleAdd.value = null;
+                    selectVerlagPopupTitleAdd.value = null;
                     modalTitleAdd.show();
                 });
 
@@ -255,7 +258,9 @@
                     .then((response) => response.json());
 
                 // Create table row elements
-                renderTableEntries(titlesArr);
+                titlesArr.forEach((title) => {
+                    addTableEntry(title)
+                });
 
                 // Load "Komponisten" from Backend and add them to select elements
                 const kompArr = await fetch('http://localhost:8000/api/komponist/alle')
@@ -278,59 +283,57 @@
                 updateButtonStates();
             }
 
-            function renderTableEntries(titlesArr) {
-                titlesArr.forEach((title) => {
-                    let tr = document.createElement("tr");
-                    tr.setAttribute("id", "table-row-title-" + title.id);
-                    tr.addEventListener("click", () => {
-                        const checkbox = document.querySelector("#checkbox-title-" + title.id);
+            function addTableEntry(titleObj) {
+                let tr = document.createElement("tr");
+                tr.setAttribute("id", "table-row-title-" + titleObj.id);
+                tr.addEventListener("click", () => {
+                    const checkbox = document.querySelector("#checkbox-title-" + titleObj.id);
 
-                        if (tr.classList.contains("selected")) {
-                            tr.classList.remove("selected");
-                            checkbox.checked = false;
-                        } else {
-                            tr.classList.add("selected");
-                            checkbox.checked = true;
-                        }
+                    if (tr.classList.contains("selected")) {
+                        tr.classList.remove("selected");
+                        checkbox.checked = false;
+                    } else {
+                        tr.classList.add("selected");
+                        checkbox.checked = true;
+                    }
 
-                        updateButtonStates();
-                    });
-                    
-                    let tdCheckbox = document.createElement("td");
-                    let inputCheckbox = document.createElement("input");
-                    inputCheckbox.classList.add("form-check-input");
-                    inputCheckbox.setAttribute("type", "checkbox");
-                    inputCheckbox.setAttribute("id", "checkbox-title-" + title.id);
-                    tdCheckbox.appendChild(inputCheckbox);
-                    tr.appendChild(tdCheckbox);
-
-                    let tdTitel = document.createElement("td");
-                    tdTitel.innerText = title.titel;
-                    tr.appendChild(tdTitel);
-
-                    let tdKomponist = document.createElement("td");
-                    tdKomponist.innerText = title.komponist_name;
-                    tr.appendChild(tdKomponist);
-
-                    let tdBearbeiter = document.createElement("td");
-                    tdBearbeiter.innerText = title.bearbeiter_name;
-                    tr.appendChild(tdBearbeiter);
-
-                    let tdVerlag = document.createElement("td");
-                    tdVerlag.innerText = title.verlag_name;
-                    tr.appendChild(tdVerlag);
-
-                    tr.dataset.id = title.id;
-                    tr.dataset.titel = title.titel;
-                    tr.dataset.komponist_id = title.komponist_id;
-                    tr.dataset.komponist_name = title.komponist_name;
-                    tr.dataset.bearbeiter_id = title.bearbeiter_id;
-                    tr.dataset.bearbeiter_name = title.bearbeiter_name;
-                    tr.dataset.verlag_id = title.verlag_id;
-                    tr.dataset.verlag_name = title.verlag_name;
-
-                    tableTitles.appendChild(tr);
+                    updateButtonStates();
                 });
+                
+                let tdCheckbox = document.createElement("td");
+                let inputCheckbox = document.createElement("input");
+                inputCheckbox.classList.add("form-check-input");
+                inputCheckbox.setAttribute("type", "checkbox");
+                inputCheckbox.setAttribute("id", "checkbox-title-" + titleObj.id);
+                tdCheckbox.appendChild(inputCheckbox);
+                tr.appendChild(tdCheckbox);
+
+                let tdTitel = document.createElement("td");
+                tdTitel.innerText = titleObj.titel;
+                tr.appendChild(tdTitel);
+
+                let tdKomponist = document.createElement("td");
+                tdKomponist.innerText = titleObj.komponist_name;
+                tr.appendChild(tdKomponist);
+
+                let tdBearbeiter = document.createElement("td");
+                tdBearbeiter.innerText = titleObj.bearbeiter_name;
+                tr.appendChild(tdBearbeiter);
+
+                let tdVerlag = document.createElement("td");
+                tdVerlag.innerText = titleObj.verlag_name;
+                tr.appendChild(tdVerlag);
+
+                tr.dataset.id = titleObj.id;
+                tr.dataset.titel = titleObj.titel;
+                tr.dataset.komponist_id = titleObj.komponist_id;
+                tr.dataset.komponist_name = titleObj.komponist_name;
+                tr.dataset.bearbeiter_id = titleObj.bearbeiter_id;
+                tr.dataset.bearbeiter_name = titleObj.bearbeiter_name;
+                tr.dataset.verlag_id = titleObj.verlag_id;
+                tr.dataset.verlag_name = titleObj.verlag_name;
+
+                tableTitles.appendChild(tr);
             }
 
             function updateButtonStates() {
@@ -400,11 +403,17 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(bodyObj)
-                });
+                })
+                .then((response) => response.json().then((data) => (
+                    {
+                        status: response.status,
+                        body: data
+                    }
+                )));
 
                 // TODO: Meldung anzeigen ob hinzufügen erfolgreich war oder nicht
-                // TODO: Titel in Tabelle anzeigen
                 console.log("Titel hinzufügen Response: " + response.status);
+                addTableEntry(response.body);
                 modalTitleAdd.hide();
             }
 

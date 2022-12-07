@@ -11,7 +11,11 @@ class LiedDao {
     }
 
     loadById(id) {
-        var sql = 'SELECT * FROM Lied WHERE id=?';
+        var sql = 'SELECT l.id, l.titel, l.komponist_id, k.name as komponist_name, l.bearbeiter_id, b.name as bearbeiter_name, l.verlag_id, v.name as verlag_name FROM Lied l ';
+        sql += 'LEFT JOIN Komponist k ON l.komponist_id = k.id ';
+        sql += 'LEFT JOIN Bearbeiter b ON l.bearbeiter_id = b.id ';
+        sql += 'LEFT JOIN Verlag v ON l.verlag_id = v.id ';
+        sql += 'WHERE l.id = ?'
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
 
