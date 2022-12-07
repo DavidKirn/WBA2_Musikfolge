@@ -259,7 +259,7 @@
 
                 // Create table row elements
                 titlesArr.forEach((title) => {
-                    addTableEntry(title)
+                    tableTitles.appendChild(createTableEntry(title));
                 });
 
                 // Load "Komponisten" from Backend and add them to select elements
@@ -283,7 +283,7 @@
                 updateButtonStates();
             }
 
-            function addTableEntry(titleObj) {
+            function createTableEntry(titleObj) {
                 let tr = document.createElement("tr");
                 tr.setAttribute("id", "table-row-title-" + titleObj.id);
                 tr.addEventListener("click", () => {
@@ -333,7 +333,12 @@
                 tr.dataset.verlag_id = titleObj.verlag_id;
                 tr.dataset.verlag_name = titleObj.verlag_name;
 
-                tableTitles.appendChild(tr);
+                return tr;
+            }
+
+            function updateTableEntry(titleObj) {
+                let tr = document.querySelector("#table-row-title-" + titleObj.id);
+                tr.replaceWith(createTableEntry(titleObj));
             }
 
             function updateButtonStates() {
@@ -456,11 +461,17 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(bodyObj)
-                });
+                })
+                .then((response) => response.json().then((data) => (
+                    {
+                        status: response.status,
+                        body: data
+                    }
+                )));
 
                 // TODO: Meldung anzeigen ob bearbeiten erfolgreich war oder nicht
-                // TODO: Titel in Tabelle aktualisieren
                 console.log("Titel bearbeiten Response: " + response.status);
+                updateTableEntry(response.body);
                 modalTitleEdit.hide();
             }
 
