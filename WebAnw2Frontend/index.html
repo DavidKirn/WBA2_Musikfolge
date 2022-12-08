@@ -111,6 +111,26 @@
             </div>
         </div>
 
+        <!-- Toasts -->
+        <!-- Success toast -->
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div class="toast align-items-center text-white bg-success border-0" id="toastSuccess" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="toastSuccessMessage"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <!-- Failure toast -->
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div class="toast align-items-center text-white bg-danger border-0" id="toastFailure" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="toastFailureMessage"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
         <div class="wrapper">
             <div class="header bg-dark">
                 <div class="container py-3">
@@ -211,6 +231,11 @@
             const modalTitleEdit = new bootstrap.Modal("#modalTitleEdit");
             const modalTitleDelete = new bootstrap.Modal("#modalTitleDelete");
 
+            const toastSuccess = new bootstrap.Toast("#toastSuccess");
+            const toastSuccessMessage = document.querySelector("#toastSuccessMessage");
+            const toastFailure = new bootstrap.Toast("#toastFailure");
+            const toastFailureMessage = document.querySelector("#toastFailureMessage");
+
             const valueModalTitleDelete = document.querySelector("#valueModalTitleDelete");
 
             window.addEventListener("DOMContentLoaded", (event) => {
@@ -259,7 +284,7 @@
 
                 // Create table row elements
                 titlesArr.forEach((title) => {
-                    tableTitles.appendChild(createTableEntry(title));
+                    addTableEntry(title);
                 });
 
                 // Load "Komponisten" from Backend and add them to select elements
@@ -281,6 +306,16 @@
                 addOptionsToSelectElement(selectVerlagPopupTitleEdit, verlagArr);
 
                 updateButtonStates();
+            }
+
+            function showSuccessMessage(message) {
+                toastSuccessMessage.innerText = message;
+                toastSuccess.show();
+            }
+
+            function showFailureMessage(message) {
+                toastFailureMessage.innerText = message;
+                toastFailure.show();
             }
 
             function createTableEntry(titleObj) {
@@ -334,6 +369,10 @@
                 tr.dataset.verlag_name = titleObj.verlag_name;
 
                 return tr;
+            }
+
+            function addTableEntry(titleObj) {
+                tableTitles.appendChild(createTableEntry(titleObj));
             }
 
             function updateTableEntry(titleObj) {
@@ -420,11 +459,16 @@
                         body: data
                     }
                 )));
-
-                // TODO: Meldung anzeigen ob hinzufügen erfolgreich war oder nicht
+                
                 console.log("Titel hinzufügen Response: " + response.status);
                 addTableEntry(response.body);
                 modalTitleAdd.hide();
+
+                if (response.status == 200) {
+                    showSuccessMessage("Titel wurde erfolgreich hinzugefügt.");
+                } else {
+                    showFailureMessage("Beim Hinzufügen des Titels ist etwas schiefgelaufen!");
+                }
             }
 
             async function editTitle() {
@@ -474,10 +518,15 @@
                     }
                 )));
 
-                // TODO: Meldung anzeigen ob bearbeiten erfolgreich war oder nicht
                 console.log("Titel bearbeiten Response: " + response.status);
                 updateTableEntry(response.body);
                 modalTitleEdit.hide();
+
+                if (response.status == 200) {
+                    showSuccessMessage("Titel wurde erfolgreich bearbeitet.");
+                } else {
+                    showFailureMessage("Beim Bearbeiten des Titels ist etwas schiefgelaufen!");
+                }
             }
 
             async function deleteTitle() {
@@ -493,10 +542,15 @@
                     }
                 )));
 
-                // TODO: Meldung anzeigen ob löschen erfolgreich war oder nicht
                 console.log("Titel löschen Response: " + response.status);
                 deleteTableEntry(response.body.eintrag);
                 modalTitleDelete.hide();
+
+                if (response.status == 200) {
+                    showSuccessMessage("Titel wurde erfolgreich gelöscht.");
+                } else {
+                    showFailureMessage("Beim Löschen des Titels ist etwas schiefgelaufen!");
+                }
             }
         </script>
     </body>
