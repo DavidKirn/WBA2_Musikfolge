@@ -135,9 +135,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Verlag hinzufügen</h5>
-                            <a href="verwaltung_verlag_tab.html">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </a>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -146,7 +144,7 @@
                             </div>
                             <div class="modal-footer">
                                 <a href="verwaltung_verlag_tab.html" class="text-decoration-none-text-body">
-                                    <button type="button" class="btn btn-primary" id="CreatePublisher">Hinzufügen</button>
+                                    <button type="button" class="btn btn-primary" id="btn-create-publisher">Hinzufügen</button>
                                 </a>
                             </div>
                         </div>
@@ -185,6 +183,7 @@
             const btnEdit = document.querySelector("#btn-edit");
             const btnAdd = document.querySelector("#btn-add");
             const btnDelete = document.querySelector("#btn-delete");
+            const btnCreatePublisher = document.querySelector('#btn-create-publisher');
 
             window.addEventListener("DOMContentLoaded", (event) => {
                 init();
@@ -199,8 +198,40 @@
                 renderTableEntries(verlagArr);
 
                 updateButtonStates();
-            }
 
+                btnCreatePublisher.addEventListener('click', createPublisher);
+            }
+            function createPublisher(){
+                console.log("in create Publisher Modal");
+                const input = document.querySelector('#input_add_publisher');
+                const publisherText = input.value;
+                if (publisherText ==""){
+                    return;
+                }
+                else{
+                    let publisherItemData ={
+                        name: publisherText,
+                    };
+                    addPublisherToBackend(publisherItemData);
+                    input.value = "";
+                }
+            }
+            async function addPublisherToBackend(newPublisherItem){
+                var response = await fetch("http://localhost:8000/api/verlag",{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newPublisherItem)
+                })
+                .then((response) => response.json().then((data) =>(
+                    {
+                        status: response.status,
+                        body: data
+                    }
+                )));
+                console.log("Titel hinzufügen Response: " + response.status);
+            }
             function renderTableEntries(verlagArr) {
                 verlagArr.forEach((verlag) => {
                     let tr = document.createElement("tr");
