@@ -108,19 +108,17 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Verlag bearbeiten</h5>
-                            <a href="verwaltung_verlag_tab.html">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </a>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Verlag</label>
-                                <input type="text" class="form-control" value ="Rundel">
+                                <input type="text" class="form-control" id="edit-Publisher-Input">
                             </div>
 
                             <div class="modal-footer">
                                 <a href="verwaltung_verlag_tab.html" class="text-decoration-none-text-body">
-                                    <button type="button" class="btn btn-primary">Ändern</button>
+                                    <button type="button" class="btn btn-primary" id="btn-update-Publisher">Ändern</button>
                                 </a>
                             </div>
                         </div>
@@ -159,18 +157,15 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Verlag löschen</h5>
-                            <a href="verwaltung_verlag_tab.html" class="text-decoration-none-text-body">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </a>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3" id="publisher-to-delete">
-                                <label class="form-label">Verlag</label>
-                                <p>Rundel</p>
+                                <label class="form-label">Verlag wirklich löschen?</label>
                             </div>
                             <div class="modal-footer">
                                 <a href="verwaltung_verlag_tab.html" class="text-decoration-none-text-body">
-                                    <button type="button" class="btn btn-primary" id="btn_delete_publisher">Löschen bestätigen</button>
+                                    <button type="button" class="btn btn-primary" id="btn-delete-publisher">Löschen bestätigen</button>
                                 </a>
                             </div>
                         </div>
@@ -183,55 +178,81 @@
             const btnEdit = document.querySelector("#btn-edit");
             const btnAdd = document.querySelector("#btn-add");
             const btnDelete = document.querySelector("#btn-delete");
-            const btnCreatePublisher = document.querySelector('#btn-create-publisher');
+            const btnPopupCreatePublisher = document.querySelector('#btn-create-publisher');
+            const btnPopupDeletePublisher = document.querySelector('#btn-delete-publisher');
+            const btnPopupUpdatePublisher = document.querySelector("#btn-update-Publisher");
+
+            const editInput = document.querySelector("#edit-Publisher-Input");
+            const publisherToDelete = document.querySelector('#publisher-to-delete');
 
             window.addEventListener("DOMContentLoaded", (event) => {
                 init();
+
+                btnEdit.addEventListener('click', (event) => {
+                    console.log("btn Edit Publisher pressed");
+                    let selectedItem = getSelectedItem();
+                    editInput.value = selectedItem.verlag_name;
+                });
+                
+                btnDelete.addEventListener('click', (event) => {
+                    let selectedItems = getAllSelectedItems();
+                    selectedItems.forEach((Element) => {
+                        const p = document.createElement('p');
+                        p.innerText = Element.verlag_name;
+                        publisherToDelete.append(p);
+                    });
+                });
+
+                btnPopupUpdatePublisher.addEventListener('click', (event) => {
+                    editPublisher();
+                });
+                
+                btnPopupCreatePublisher.addEventListener('click', (event) => {
+                    createPublisher();
+                });
+
+                btnPopupDeletePublisher.addEventListener('click', (event) => {
+                    deletePublisher();
+                });
             });
 
             async function init() {
-                // Load verlag from Backend
                 const verlagArr = await fetch('http://localhost:8000/api/verlag/alle')
                     .then((response) => response.json());
 
-                // Create table row elements
                 renderTableEntries(verlagArr);
 
                 updateButtonStates();
-
-                btnCreatePublisher.addEventListener('click', createPublisher);
             }
-            function createPublisher(){
+
+            async function createPublisher(){
                 console.log("in create Publisher Modal");
                 const input = document.querySelector('#input_add_publisher');
-                const publisherText = input.value;
-                if (publisherText ==""){
+                
+                if (input.value ==""){
                     return;
                 }
                 else{
                     let publisherItemData ={
-                        name: publisherText,
+                        name: input.value,
                     };
-                    addPublisherToBackend(publisherItemData);
                     input.value = "";
+                    const response = await fetch("http://localhost:8000/api/verlag",{
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(publisherItemData)
+                    })
+                    .then((response) => response.json().then((data) =>(
+                        {
+                            status: response.status,
+                            body: data
+                        }
+                )));
                 }
             }
-            async function addPublisherToBackend(newPublisherItem){
-                var response = await fetch("http://localhost:8000/api/verlag",{
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(newPublisherItem)
-                })
-                .then((response) => response.json().then((data) =>(
-                    {
-                        status: response.status,
-                        body: data
-                    }
-                )));
-                console.log("Titel hinzufügen Response: " + response.status);
-            }
+            
             function renderTableEntries(verlagArr) {
                 verlagArr.forEach((verlag) => {
                     let tr = document.createElement("tr");
@@ -262,6 +283,9 @@
                     tdBearbeiter.innerText = verlag.name;
                     tr.appendChild(tdBearbeiter);
 
+                    tr.dataset.verlag_id = verlag.id;
+                    tr.dataset.verlag_name = verlag.name;
+
                     tableVerlag.appendChild(tr);
                 });
             }
@@ -283,6 +307,61 @@
                     btnDelete.disabled = false;
                 }
             }
+
+            function getSelectedItem() {
+                let selectedElement = document.querySelector("tr.selected");
+                return selectedElement.dataset;
+            }
+            function getAllSelectedItems() {
+                let selectedElements = document.querySelectorAll("tr.selected");
+                let Elements = [];
+                selectedElements.forEach(element => {
+                    Elements.push(element.dataset); 
+                });
+                return Elements;
+            }
+
+            async function editPublisher(){
+                publisherItemData = {};
+                console.log('in edit Publisher In Backend');
+
+                let selectedItem = getSelectedItem();
+                publisherItemData.id = selectedItem.verlag_id;
+
+                if (editInput.value != "" & editInput.valuel !=" "){
+                    publisherItemData.name = editInput.value;
+                }
+                console.log(JSON.stringify(publisherItemData));
+                const response = await fetch("http://localhost:8000/api/verlag", {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(publisherItemData)
+                })
+                .then((response) => reesponse.json().then((data) => (
+                    {
+                        status : response.status,
+                        body: data
+                    }
+                )));
+            }
+
+            async function deletePublisher(){
+                let selectedItems = getAllSelectedItems();
+                 selectedItems.forEach(async element => {
+                    const response= await fetch("http://localhost:8000/api/verlag/" + element.verlag_id,{
+                    method: "DELETE"
+                    })
+                    .then((response) => response.hson().then((data) => (
+                        {
+                            status: response.status,
+                            body: data
+                        }
+                    ))); 
+                });
+            }
+
         </script>
     </body>
 </html>
