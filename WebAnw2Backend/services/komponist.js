@@ -19,6 +19,20 @@ serviceRouter.get('/komponist/gib/:id', function(request, response) {
     }
 });
 
+serviceRouter.get('/komponist/such/:name', function(request, response) {
+    console.log('Service Komponist: Client requested one record, name=' + request.params.name);
+
+    const komponistDao = new KomponistDao(request.app.locals.dbConnection);
+    try {
+        var obj = komponistDao.loadByText(request.params.name);
+        console.log('Service Komponist: Record loaded');
+        response.status(200).json(obj);
+    } catch (ex) {
+        console.error('Service Komponist: Error loading searched records. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+});
+
 serviceRouter.get('/komponist/alle', function(request, response) {
     console.log('Service Komponist: Client requested all records');
 

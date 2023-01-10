@@ -19,6 +19,20 @@ serviceRouter.get('/verlag/gib/:id', function(request, response) {
     }
 });
 
+serviceRouter.get('/verlag/such/:name', function(request, response) {
+    console.log('Service Verlag: Client requested one record, name=' + request.params.name);
+
+    const verlagDao = new VerlagDao(request.app.locals.dbConnection);
+    try {
+        var obj = verlagDao.loadByText(request.params.name);
+        console.log('Service Verlag: Record loaded');
+        response.status(200).json(obj);
+    } catch (ex) {
+        console.error('Service Verlag: Error loading searched records. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+});
+
 serviceRouter.get('/verlag/alle', function(request, response) {
     console.log('Service Verlag: Client requested all records');
 

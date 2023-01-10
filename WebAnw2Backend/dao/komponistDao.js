@@ -21,6 +21,17 @@ class KomponistDao {
         return result;
     }
 
+    loadByText(name) {
+        var sql = 'SELECT * FROM Komponist WHERE name=?';
+        var statement = this._conn.prepare(sql);
+        var result = statement.get(name);
+
+        if (helper.isUndefined(result)) 
+            throw new Error('No Record found by name=' + name);
+
+        return result;
+    }
+
     loadAll() {
         var sql = 'SELECT * FROM Komponist';
         var statement = this._conn.prepare(sql);
