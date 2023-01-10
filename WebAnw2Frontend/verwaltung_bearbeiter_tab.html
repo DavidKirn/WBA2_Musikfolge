@@ -42,7 +42,7 @@
                         <input class="form-control" type="text" name="search" placeholder="Suche">
                     </div>
                     <div class="col-4">
-                        <button type="button" class="btn btn-secondary w-100">Suchen</button>
+                        <button type="button" class="btn btn-secondary w-100" id="searchButton" onclick="updateSearch()">Suchen</button>
                     </div>
                 </div>
                 <hr>
@@ -198,6 +198,20 @@
             async function init() {
                 // Load bearbeiter from Backend
                 const bearbeiterArr = await fetch('http://localhost:8000/api/bearbeiter/alle')
+                    .then((response) => response.json());
+
+                // Create table row elements
+                renderTableEntries(bearbeiterArr);
+
+                updateButtonStates();
+            }
+
+            async function updateSearch(){
+                 
+                var name = document.getElementById("searchButton").value; 
+                // Load bearbeiter from Backend
+                var link = 'http://localhost:8000/api/bearbeiter/such/'.concat(name);
+                const bearbeiterArr = await fetch(link)
                     .then((response) => response.json());
 
                 // Create table row elements
