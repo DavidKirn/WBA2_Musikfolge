@@ -19,6 +19,20 @@ serviceRouter.get('/bearbeiter/gib/:id', function(request, response) {
     }
 });
 
+serviceRouter.get('/bearbeiter/such/:name', function(request, response) {
+    console.log('Service Bearbeiter: Client requested one record, name=' + request.params.name);
+
+    const bearbeiterDao = new BearbeiterDao(request.app.locals.dbConnection);
+    try {
+        var obj = bearbeiterDao.loadByText(request.params.name);
+        console.log('Service Bearbeiter: Record loaded');
+        response.status(200).json(obj);
+    } catch (ex) {
+        console.error('Service Bearbeiter: Error loading searched records. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+});
+
 serviceRouter.get('/bearbeiter/alle', function(request, response) {
     console.log('Service Bearbeiter: Client requested all records');
 
