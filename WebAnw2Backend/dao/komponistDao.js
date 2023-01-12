@@ -21,7 +21,7 @@ class KomponistDao {
         return result;
     }
 
-    loadByText(name) {
+    loadByName(name) {
         var sql = 'SELECT * FROM Komponist WHERE name=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(name);

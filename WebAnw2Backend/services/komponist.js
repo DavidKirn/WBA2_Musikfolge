@@ -24,7 +24,7 @@ serviceRouter.get('/komponist/such/:name', function(request, response) {
 
     const komponistDao = new KomponistDao(request.app.locals.dbConnection);
     try {
-        var obj = komponistDao.loadByText(request.params.name);
+        var obj = komponistDao.loadByName(request.params.name);
         console.log('Service Komponist: Record loaded');
         response.status(200).json(obj);
     } catch (ex) {
