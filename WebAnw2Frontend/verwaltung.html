@@ -195,9 +195,15 @@
             const btnAdd = document.querySelector("#btn-add");
             const btnDelete = document.querySelector("#btn-delete");
 
+            const input_add_composer = document.querySelector("#input_add_composer"); 
+
             window.addEventListener("DOMContentLoaded", (event) => {
                 init();
             });
+
+            btnAdd.addEventListener("click", (event) => {
+                    addComposer();
+                });
 
             async function init() {
                 // Load komponist from Backend
@@ -260,6 +266,37 @@
                     btnAdd.disabled = false;
                     btnDelete.disabled = false;
                 }
+            }
+            async function addComposer(){
+                bodyObj = {}
+                if (input_add_composer.value.trim() == "") {
+                    // TODO: Fehlermeldung: Kein Titel eingegeben
+                    return;
+                }
+                bodyObj.composer = input_add_composer.value.trim(); 
+                console.log(JSON.stringify(bodyObj)); 
+                const response = await fetch("http://localhost:8000/api/komponist", {
+                    method: 'POST', 
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(bodyObj)
+                })
+                .then((response)=> response.json().then((data)=>(
+                    {
+                        status: response.status, 
+                        body: data
+                    }
+                )));
+                console.log("Komponist hinzufügen Response: " + response.status);
+                addTableEntry(response.body);
+
+                if (response.status == 200) {
+                    showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
+                } else {
+                    showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
+                }
+                alert("im AddComposer")
             }
         </script>
 
