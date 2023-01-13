@@ -121,7 +121,7 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Komponist</label>
-                                <input type="text" class="form-control" value="Richard Wagner">
+                                <input type="text" class="form-control" id="edit-Composer-Input">
                             </div>
 
                             <div class="modal-footer">
@@ -193,12 +193,19 @@
             const btnPopupKomponistAdd = document.querySelector('#btnPopupKomponistAdd'); 
             const btnPopupKomponistDelete = document.querySelector('#btn_delete_composer'); 
 
+            const editComposerInput = document.querySelector('#edit-Composer-Input'); 
             const composerToDelete = document.querySelector("#composer-to-delete"); 
 
             const input_add_composer = document.querySelector("#input_add_composer"); 
 
             window.addEventListener("DOMContentLoaded", (event) => {
                 init();
+
+                btnEdit.addEventListener('click', (event)=>{
+                    console.log("btnEdit Composer pressed"); 
+                    let selectedItem = getSelectedItem(); 
+                    editComposerInput.value = selectedItem.composer_name; 
+                })
             });
 
             btnDelete.addEventListener('click', (event) => {
@@ -307,6 +314,9 @@
                     tdKomponist.innerText = komponist.name;
                     tr.appendChild(tdKomponist);
 
+                    tr.dataset.komponist_id = komponist.id; 
+                    tr.dataset.komponist_name = komponist.name; 
+
                     tableKomponisten.appendChild(tr);
                 });
             }
@@ -378,6 +388,32 @@
                     //showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
                 }
                 alert("im AddComposer")
+            }
+
+            async function editComposer(){
+                composerItemData = {};
+                console.log('in edit Composer In Backend');
+
+                let selectedItem = getSelectedItem();
+                composerItemData.id = selectedItem.komponist_id;
+
+                if (editComposerInput.value != "" & editComposerInput.valuel !=" "){
+                    composerItemData.name = editComposerInput.value;
+                }
+                console.log(JSON.stringify(composerItemData));
+                const response = await fetch("http://localhost:8000/api/komponist", {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(composerItemData)
+                })
+                .then((response) => reesponse.json().then((data) => (
+                    {
+                        status : response.status,
+                        body: data
+                    }
+                )));
             }
 
             async function deleteComposer() {
