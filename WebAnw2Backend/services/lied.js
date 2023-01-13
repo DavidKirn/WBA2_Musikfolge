@@ -19,6 +19,20 @@ serviceRouter.get('/lied/gib/:id', function(request, response) {
     }
 });
 
+serviceRouter.get('/lied/such/:name', function(request, response) {
+    console.log('Service Lied: Client requested all records that match name, name=' + request.params.name);
+
+    const liedDao = new LiedDao(request.app.locals.dbConnection);
+    try {
+        var arr = liedDao.loadByName(request.params.name);
+        console.log('Service Lied: Records loaded');
+        response.status(200).json(arr);
+    } catch (ex) {
+        console.error('Service Lied: Error loading matched records by name. Exception occured: ' + ex.message);
+        response.status(400).json({ 'fehler': true, 'nachricht': ex.message });
+    }
+});
+
 serviceRouter.get('/lied/alle', function(request, response) {
     console.log('Service Lied: Client requested all records');
 

@@ -159,16 +159,12 @@
             </div>
 
             <div class="content-header container">
-                <div class="input-group my-3">
-                    <input type="text" class="form-control" aria-label="Text input with dropdown button">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Titelsuche</button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Titelsuche</a></li>
-                        <li><a class="dropdown-item" href="#">Komponistensuche</a></li>
-                        <li><a class="dropdown-item" href="#">Bearbeitersuche</a></li>
-                        <li><a class="dropdown-item" href="#">Verlagssuche</a></li>
-                    </ul>
+                <div class="row my-3">
+                    <div class="col-4">
+                        <input class="form-control" type="text" name="search" placeholder="Suche" id="inputSearch">
+                    </div>
                 </div>
+                <hr>
             </div>
 
             <div class="content-scroll-table container">
@@ -219,6 +215,7 @@
 
             const inputTitelPopupTitleAdd = document.querySelector("#inputTitelPopupTitleAdd");
             const inputTitelPopupTitleEdit = document.querySelector("#inputTitelPopupTitleEdit");
+            const inputSearch = document.querySelector("#inputSearch");
 
             const selectKomponistPopupTitleAdd = document.querySelector("#selectKomponistPopupTitleAdd");
             const selectBearbeiterPopupTitleAdd = document.querySelector("#selectBearbeiterPopupTitleAdd");
@@ -274,6 +271,10 @@
 
                 btnPopupTitleDelete.addEventListener("click", (event) => {
                     deleteTitle();
+                });
+
+                inputSearch.addEventListener("input", (event) => {
+                    searchTitle();
                 });
             });
 
@@ -551,6 +552,27 @@
                 } else {
                     showFailureMessage("Beim Löschen des Titels ist etwas schiefgelaufen!");
                 }
+            }
+
+            async function searchTitle() {
+                // Remove old table entries
+                tableTitles.innerHTML = "";
+                
+                // Get matched titles from Backend
+                let apiLink = "http://localhost:8000/api/lied/such/" + inputSearch.value;
+                // If search input is empty get all titles
+                if (inputSearch.value.trim() == "") {
+                    apiLink = "http://localhost:8000/api/lied/alle";
+                }
+                const titlesArr = await fetch(apiLink)
+                    .then((response) => response.json());
+
+                // Create table row elements
+                titlesArr.forEach((title) => {
+                    addTableEntry(title);
+                });
+
+                updateButtonStates();
             }
         </script>
     </body>

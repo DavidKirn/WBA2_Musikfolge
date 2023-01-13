@@ -25,6 +25,21 @@ class LiedDao {
         return result;
     }
 
+    loadByName(name) {
+        var sql = 'SELECT l.id, l.titel, l.komponist_id, k.name as komponist_name, l.bearbeiter_id, b.name as bearbeiter_name, l.verlag_id, v.name as verlag_name FROM Lied l ';
+        sql += 'LEFT JOIN Komponist k ON l.komponist_id = k.id ';
+        sql += 'LEFT JOIN Bearbeiter b ON l.bearbeiter_id = b.id ';
+        sql += 'LEFT JOIN Verlag v ON l.verlag_id = v.id ';
+        sql += 'WHERE l.titel LIKE ? OR k.name LIKE ? OR b.name LIKE ? OR v.name LIKE ?'
+        var statement = this._conn.prepare(sql);
+        var result = statement.all("%" + name + "%", "%" + name + "%", "%" + name + "%", "%" + name + "%");
+
+        if (helper.isArrayEmpty(result)) 
+            return [];
+        
+        return result;
+    }
+
     loadAll() {
         var sql = 'SELECT l.id, l.titel, l.komponist_id, k.name as komponist_name, l.bearbeiter_id, b.name as bearbeiter_name, l.verlag_id, v.name as verlag_name FROM Lied l ';
         sql += 'LEFT JOIN Komponist k ON l.komponist_id = k.id ';
