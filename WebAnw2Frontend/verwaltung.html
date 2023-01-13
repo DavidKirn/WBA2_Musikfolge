@@ -126,7 +126,7 @@
 
                             <div class="modal-footer">
                                 <a href="verwaltung.html" class="text-decoration-none-text-body">
-                                    <button type="button" class="btn btn-primary">Ändern</button>
+                                    <button type="button" class="btn btn-primary" id="btnPopupKomponistEdit">Ändern</button>
                                 </a>
                             </div>
                         </div>
@@ -192,6 +192,7 @@
 
             const btnPopupKomponistAdd = document.querySelector('#btnPopupKomponistAdd'); 
             const btnPopupKomponistDelete = document.querySelector('#btn_delete_composer'); 
+            const btnPopupKomponistEdit = document.querySelector('#btnPopupKomponistEdit'); 
 
             const editComposerInput = document.querySelector('#edit-Composer-Input'); 
             const composerToDelete = document.querySelector("#composer-to-delete"); 
@@ -204,7 +205,7 @@
                 btnEdit.addEventListener('click', (event)=>{
                     console.log("btnEdit Composer pressed"); 
                     let selectedItem = getSelectedItem(); 
-                    editComposerInput.value = selectedItem.composer_name; 
+                    editComposerInput.value = selectedItem.komponist_name; 
                 })
             });
 
@@ -219,6 +220,10 @@
 
             btnPopupKomponistAdd.addEventListener("click", (event) => {
                     addComposer();
+                });
+            
+            btnPopupKomponistEdit.addEventListener("click", (event) => {
+                    editComposer();
                 });
 
             btnPopupKomponistDelete.addEventListener("click", (event) => {
@@ -419,7 +424,7 @@
             async function deleteComposer() {
                 let selectedItems = getAllSelectedItems();
                 selectedItems.forEach(async element => {
-                    const response= await fetch("http://localhost:8000/api/komponist/" + element.verlag_id,{
+                    const response= await fetch("http://localhost:8000/api/komponist/" + element.komponist_id,{
                     method: "DELETE"
                     })
                     .then((response) => response.hson().then((data) => (
