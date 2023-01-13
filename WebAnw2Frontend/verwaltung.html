@@ -254,6 +254,16 @@
                 updateButtonStates();
             }
 
+            function showSuccessMessage(message) {
+                toastSuccessMessage.innerText = message;
+                toastSuccess.show();
+            }
+
+            function showFailureMessage(message) {
+                toastFailureMessage.innerText = message;
+                toastFailure.show();
+            }
+
             function renderTableEntries(komponistArr) {
                 komponistArr.forEach((komponist) => {
                     let tr = document.createElement("tr");
@@ -331,12 +341,16 @@
                 addTableEntry(response.body);
 
                 if (response.status == 200) {
-                    //showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
+                    showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
                 } else {
-                    //showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
+                    showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
                 }
                 alert("im AddComposer")
             }
+
+
+
+
         </script>
 
     </body>
