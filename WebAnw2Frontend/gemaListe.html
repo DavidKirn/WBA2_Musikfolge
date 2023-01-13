@@ -10,7 +10,6 @@
         
     </head>
     <body>
-
         <div class="wrapper">
             <div class="header bg-dark">
                 <div class="container py-3">
@@ -39,16 +38,12 @@
             </div>
 
             <div class="content-header container">
-                <div class="input-group my-3">
-                    <input type="text" class="form-control" aria-label="Text input with dropdown button">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Titelsuche</button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Titelsuche</a></li>
-                        <li><a class="dropdown-item" href="#">Komponistensuche</a></li>
-                        <li><a class="dropdown-item" href="#">Bearbeitersuche</a></li>
-                        <li><a class="dropdown-item" href="#">Verlagssuche</a></li>
-                    </ul>
+                <div class="row my-3">
+                    <div class="col-4">
+                        <input class="form-control" type="text" name="search" placeholder="Suche" id="inputSearch">
+                    </div>
                 </div>
+                <hr>
             </div>
 
             <div class="content-scroll-table container">
@@ -75,7 +70,7 @@
                         </div>
                         <div class="col-6 col-md-4">
                             <a href=erzeugteGemaListe.html target="_blank">
-                                <button type="button" class="btn btn-secondary w-100" id="btn-create-GemaListe">GEMA-Liste erstellen</button>
+                                <button type="button" class="btn btn-secondary w-100" id="btn-create-GemaListe" disabled>GEMA-Liste erstellen</button>
                             </a>
                         </div>
                     </div>
@@ -162,6 +157,9 @@
             besetzung: 'Blasorchester',
             GEMANr: 234567
         }];
+
+        const inputSearch = document.querySelector("#inputSearch");
+
         const btnVereinsdaten = document.querySelector('#btn-vereinsdaten-aendern');
         const btnGemaListe = document.querySelector('#btn-create-GemaListe');
         const tableTitles = document.querySelector('#table-titles');
@@ -169,82 +167,96 @@
 
         window.addEventListener("DOMContentLoaded", (event) => {
             init();
+
             btnVereinsdaten.addEventListener('click',showVereinsdaten);
-            
+
+            save.addEventListener('click',checkVereinsdaten);
+
+            inputSearch.addEventListener("input", (event) => {
+                searchTitle();
+            });
         });
+
         async function init() {
             // Load titles from Backend
             const titlesArr = await fetch('http://localhost:8000/api/lied/alle')
                 .then((response) => response.json());
-            console.log(titlesArr);
+
             // Create table row elements
-            renderTableEntries(titlesArr);
-            
-            save.addEventListener('click',checkVereinsdaten);
+            titlesArr.forEach((title) => {
+                addTableEntry(title);
+            });
+
             updateButtonStates();
         }
 
-        function renderTableEntries(titlesArr) {
-            titlesArr.forEach((title) => {
-                let tr = document.createElement("tr");
-                tr.setAttribute("id", "table-row-title-" + title.id);
-                tr.addEventListener("click", () => {
-                    const checkbox = document.querySelector("#checkbox-title-" + title.id);
+        function createTableEntry(titleObj) {
+            let tr = document.createElement("tr");
+            tr.setAttribute("id", "table-row-title-" + titleObj.id);
+            tr.addEventListener("click", () => {
+                const checkbox = document.querySelector("#checkbox-title-" + titleObj.id);
 
-                    if (tr.classList.contains("selected")) {
-                        tr.classList.remove("selected");
-                        checkbox.checked = false;
-                    } else {
-                        tr.classList.add("selected");
-                        checkbox.checked = true;
-                    }
+                if (tr.classList.contains("selected")) {
+                    tr.classList.remove("selected");
+                    checkbox.checked = false;
+                } else {
+                    tr.classList.add("selected");
+                    checkbox.checked = true;
+                }
 
-                    updateButtonStates();
-                });
-                
-                let tdCheckbox = document.createElement("td");
-                let inputCheckbox = document.createElement("input");
-                inputCheckbox.classList.add("form-check-input");
-                inputCheckbox.setAttribute("type", "checkbox");
-                inputCheckbox.setAttribute("id", "checkbox-title-" + title.id);
-                tdCheckbox.appendChild(inputCheckbox);
-                tr.appendChild(tdCheckbox);
-
-                let tdTitel = document.createElement("td");
-                tdTitel.innerText = title.titel;
-                tr.appendChild(tdTitel);
-
-                let tdKomponist = document.createElement("td");
-                tdKomponist.innerText = title.komponist_name;
-                tr.appendChild(tdKomponist);
-
-                let tdBearbeiter = document.createElement("td");
-                tdBearbeiter.innerText = title.bearbeiter_name;
-                tr.appendChild(tdBearbeiter);
-
-                let tdVerlag = document.createElement("td");
-                tdVerlag.innerText = title.verlag_name;
-                tr.appendChild(tdVerlag);
-
-                tableTitles.appendChild(tr);
+                updateButtonStates();
             });
+            
+            let tdCheckbox = document.createElement("td");
+            let inputCheckbox = document.createElement("input");
+            inputCheckbox.classList.add("form-check-input");
+            inputCheckbox.setAttribute("type", "checkbox");
+            inputCheckbox.setAttribute("id", "checkbox-title-" + titleObj.id);
+            tdCheckbox.appendChild(inputCheckbox);
+            tr.appendChild(tdCheckbox);
+
+            let tdTitel = document.createElement("td");
+            tdTitel.innerText = titleObj.titel;
+            tr.appendChild(tdTitel);
+
+            let tdKomponist = document.createElement("td");
+            tdKomponist.innerText = titleObj.komponist_name;
+            tr.appendChild(tdKomponist);
+
+            let tdBearbeiter = document.createElement("td");
+            tdBearbeiter.innerText = titleObj.bearbeiter_name;
+            tr.appendChild(tdBearbeiter);
+
+            let tdVerlag = document.createElement("td");
+            tdVerlag.innerText = titleObj.verlag_name;
+            tr.appendChild(tdVerlag);
+
+            tr.dataset.id = titleObj.id;
+            tr.dataset.titel = titleObj.titel;
+            tr.dataset.komponist_id = titleObj.komponist_id;
+            tr.dataset.komponist_name = titleObj.komponist_name;
+            tr.dataset.bearbeiter_id = titleObj.bearbeiter_id;
+            tr.dataset.bearbeiter_name = titleObj.bearbeiter_name;
+            tr.dataset.verlag_id = titleObj.verlag_id;
+            tr.dataset.verlag_name = titleObj.verlag_name;
+
+            return tr;
+        }
+
+        function addTableEntry(titleObj) {
+            tableTitles.appendChild(createTableEntry(titleObj));
         }
 
         function updateButtonStates() {
             let selectedElements = document.querySelectorAll("tr.selected");
 
             if (selectedElements.length == 0) {
-                btnVereinsdaten.disabled = false;
                 btnGemaListe.disabled = true;
-            } else if (selectedElements.length == 1) {
-                btnVereinsdaten.disabled = false;
+            } else if (selectedElements.length >= 1) {
                 btnGemaListe.disabled = false;
-            } else if (selectedElements.length > 1) {
-                btnVereinsdaten.disabled = false;
-                btnGemaListe.disabled = false;
-
             }
         }
+
         function addOptionsToSelectElement(selectElement, optionsArr) {
             optionsArr.forEach((option) => {
                 let optionElem = document.createElement("option");
@@ -253,6 +265,7 @@
                 selectElement.appendChild(optionElem);
             });
         }
+
         function showVereinsdaten(){
             verein.forEach(v => {
                 const NameKapelle = document.querySelector('#NameKapelle');
@@ -277,6 +290,7 @@
                 Besetzung.value = v.besetzung;
             });
         }
+
         function checkVereinsdaten(){
             verein.forEach(v => {
                 const NameKapelle = document.querySelector('#NameKapelle');
@@ -298,6 +312,27 @@
                 const Besetzung = document.querySelector('#Besetzung');
                 v.besetzung = Besetzung.value;
             });
+        }
+
+        async function searchTitle() {
+            // Remove old table entries
+            tableTitles.innerHTML = "";
+            
+            // Get matched titles from Backend
+            let apiLink = "http://localhost:8000/api/lied/such/" + inputSearch.value;
+            // If search input is empty get all titles
+            if (inputSearch.value.trim() == "") {
+                apiLink = "http://localhost:8000/api/lied/alle";
+            }
+            const titlesArr = await fetch(apiLink)
+                .then((response) => response.json());
+
+            // Create table row elements
+            titlesArr.forEach((title) => {
+                addTableEntry(title);
+            });
+
+            updateButtonStates();
         }
     </script>
 </html>
