@@ -165,14 +165,11 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Komponist löschen</h5>
-                            <a href="verwaltung.html" class="text-decoration-none-text-body">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </a>
                         </div>
                         <div class="modal-body">
-                            <div class="mb-3" id="publisher-to-delete">
-                                <label class="form-label">Komponist</label> 
-                                <p>Richard Wagner</p>
+                            <div class="mb-3" id="composer-to-delete">
+                                <label class="form-label">Komponist wirklich löschen?</label> 
                             </div>
                             <div class="modal-footer">
                                 <a href="verwaltung.html" class="text-decoration-none-text-body">
@@ -193,7 +190,10 @@
             const btnAdd = document.querySelector("#btn-add");
             const btnDelete = document.querySelector("#btn-delete");
 
-            const btnPopupKomponistAdd = document.querySelector('#btnPopupKomponistAdd')
+            const btnPopupKomponistAdd = document.querySelector('#btnPopupKomponistAdd'); 
+            const btnPopupKomponistDelete = document.querySelector('#btn_delete_composer'); 
+
+            const composerToDelete = document.querySelector("#composer-to-delete"); 
 
             const input_add_composer = document.querySelector("#input_add_composer"); 
 
@@ -201,8 +201,21 @@
                 init();
             });
 
+            btnDelete.addEventListener('click', (event) => {
+                let selectedItems = getAllSelectedItems();
+                selectedItems.forEach((Element) => {
+                    const p = document.createElement('p');
+                    p.innerText = Element.komponist_name;
+                    composerToDelete.append(p);
+                });
+            });
+
             btnPopupKomponistAdd.addEventListener("click", (event) => {
                     addComposer();
+                });
+
+            btnPopupKomponistDelete.addEventListener("click", (event) => {
+                    deleteComposer();
                 });
 
             function addTableEntry(komponistObj) {
@@ -298,6 +311,11 @@
                 });
             }
 
+            function deleteTableEntry(komponistObj) {
+                let tr = document.querySelector("#table-row-komponist-" + komponistObj.id);
+                tr.remove();
+            }
+
             function updateButtonStates() {
                 let selectedElements = document.querySelectorAll("tr.selected");
 
@@ -315,8 +333,22 @@
                     btnDelete.disabled = false;
                 }
             }
+
+            function getSelectedItem() {
+                let selectedElement = document.querySelector("tr.selected");
+                return selectedElement.dataset;
+            }
+
+            function getAllSelectedItems() {
+                let selectedElements = document.querySelectorAll("tr.selected");
+                let Elements = [];
+                selectedElements.forEach(element => {
+                    Elements.push(element.dataset); 
+                });
+                return Elements;
+            }
+
             async function addComposer(){
-                alert("hallo"); 
                 bodyObj = {}
                 if (input_add_composer.value.trim() == "") {
                     // TODO: Fehlermeldung: Kein Titel eingegeben
@@ -341,16 +373,36 @@
                 addTableEntry(response.body);
 
                 if (response.status == 200) {
-                    showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
+                    //showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
                 } else {
-                    showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
+                    //showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
                 }
                 alert("im AddComposer")
             }
 
+            async function deleteComposer() {
+                let selectedComposer = getSelectedItem();
 
+                const response = await fetch("http://localhost:8000/api/lied/" + selectedComposer.id, {
+                    method: 'DELETE'
+                })
+                .then((response) => response.json().then((data) => (
+                    {
+                        status: response.status,
+                        body: data
+                    }
+                )));
 
+                console.log("Komponist löschen Response: " + response.status);
+                deleteTableEntry(response.body.eintrag);
+                modalTitleDelete.hide();
 
+                if (response.status == 200) {
+                    //showSuccessMessage("Komponist wurde erfolgreich gelöscht.");
+                } else {
+                    //showFailureMessage("Beim Löschen des Komponisten ist etwas schiefgelaufen!");
+                }
+            }
         </script>
 
     </body>
