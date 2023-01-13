@@ -24,7 +24,7 @@ serviceRouter.get('/bearbeiter/such/:name', function(request, response) {
 
     const bearbeiterDao = new BearbeiterDao(request.app.locals.dbConnection);
     try {
-        var obj = bearbeiterDao.loadByText(request.params.name);
+        var obj = bearbeiterDao.loadByName(request.params.name);
         console.log('Service Bearbeiter: Record loaded');
         response.status(200).json(obj);
     } catch (ex) {

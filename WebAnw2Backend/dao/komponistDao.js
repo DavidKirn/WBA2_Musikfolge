@@ -22,9 +22,9 @@ class KomponistDao {
     }
 
     loadByName(name) {
-        var sql = 'SELECT * FROM Komponist WHERE name=?';
+        var sql = 'SELECT * FROM Komponist WHERE name LIKE ?';
         var statement = this._conn.prepare(sql);
-        var result = statement.get(name);
+        var result = statement.get("%" + name + "%");
 
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by name=' + name);

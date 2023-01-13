@@ -24,7 +24,7 @@ serviceRouter.get('/verlag/such/:name', function(request, response) {
 
     const verlagDao = new VerlagDao(request.app.locals.dbConnection);
     try {
-        var obj = verlagDao.loadByText(request.params.name);
+        var obj = verlagDao.loadByName(request.params.name);
         console.log('Service Verlag: Record loaded');
         response.status(200).json(obj);
     } catch (ex) {

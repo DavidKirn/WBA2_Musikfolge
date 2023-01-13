@@ -21,10 +21,11 @@ class BearbeiterDao {
         return result;
     }
 
-    loadByText(name) {
-        var sql = 'SELECT * FROM Bearbeiter WHERE name=?';
+    loadByName(name) {
+        console.log('hallo'); 
+        var sql = 'SELECT * FROM Bearbeiter WHERE name LIKE ?';
         var statement = this._conn.prepare(sql);
-        var result = statement.get(name);
+        var result = statement.get("%" + name + "%");
 
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by name=' + name);

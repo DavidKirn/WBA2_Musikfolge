@@ -21,10 +21,10 @@ class VerlagDao {
         return result;
     }
 
-    loadByText(name) {
-        var sql = 'SELECT * FROM Verlag WHERE name=?';
+    loadByName(name) {
+        var sql = 'SELECT * FROM Verlag WHERE name LIKE ?';
         var statement = this._conn.prepare(sql);
-        var result = statement.get(name);
+        var result = statement.get("%" + name + "%");
 
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by name=' + name);
