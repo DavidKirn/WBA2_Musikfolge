@@ -417,17 +417,18 @@
             }
 
             async function deleteComposer() {
-                let selectedComposer = getSelectedItem();
-
-                const response = await fetch("http://localhost:8000/api/lied/" + selectedComposer.id, {
-                    method: 'DELETE'
-                })
-                .then((response) => response.json().then((data) => (
-                    {
-                        status: response.status,
-                        body: data
-                    }
-                )));
+                let selectedItems = getAllSelectedItems();
+                selectedItems.forEach(async element => {
+                    const response= await fetch("http://localhost:8000/api/komponist/" + element.verlag_id,{
+                    method: "DELETE"
+                    })
+                    .then((response) => response.hson().then((data) => (
+                        {
+                            status: response.status,
+                            body: data
+                        }
+                    ))); 
+                });
 
                 console.log("Komponist löschen Response: " + response.status);
                 deleteTableEntry(response.body.eintrag);
