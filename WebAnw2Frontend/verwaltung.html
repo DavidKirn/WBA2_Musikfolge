@@ -142,7 +142,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title">Komponist hinzufügen</h5>
                             <a href="verwaltung.html">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
                             </a>
                         </div>
                         <div class="modal-body">
@@ -151,9 +151,7 @@
                                 <input type="text" class="form-control" id="input_add_composer">
                             </div>
                             <div class="modal-footer">
-                                <a href="verwaltung.html" class="text-decoration-none-text-body">
-                                    <button type="button" class="btn btn-primary" id="CreateComposer">Hinzufügen</button>
-                                </a>
+                                <button type="button" class="btn btn-primary" id="btnPopupKomponistAdd">Hinzufügen</button>
                             </div>
                         </div>
                     </div>
@@ -195,15 +193,55 @@
             const btnAdd = document.querySelector("#btn-add");
             const btnDelete = document.querySelector("#btn-delete");
 
+            const btnPopupKomponistAdd = document.querySelector('#btnPopupKomponistAdd')
+
             const input_add_composer = document.querySelector("#input_add_composer"); 
 
             window.addEventListener("DOMContentLoaded", (event) => {
                 init();
             });
 
-            btnAdd.addEventListener("click", (event) => {
+            btnPopupKomponistAdd.addEventListener("click", (event) => {
                     addComposer();
                 });
+
+            function addTableEntry(komponistObj) {
+                tableKomponisten.appendChild(createTableEntry(komponistObj));
+            }
+
+            function createTableEntry(komponistObj) {
+                let tr = document.createElement("tr");
+                tr.setAttribute("id", "table-row-title-" + komponistObj.id);
+                tr.addEventListener("click", () => {
+                    const checkbox = document.querySelector("#checkbox-title-" + komponistObj.id);
+
+                    if (tr.classList.contains("selected")) {
+                        tr.classList.remove("selected");
+                        checkbox.checked = false;
+                    } else {
+                        tr.classList.add("selected");
+                        checkbox.checked = true;
+                    }
+
+                    updateButtonStates();
+                });
+                
+                let tdCheckbox = document.createElement("td");
+                let inputCheckbox = document.createElement("input");
+                inputCheckbox.classList.add("form-check-input");
+                inputCheckbox.setAttribute("type", "checkbox");
+                inputCheckbox.setAttribute("id", "checkbox-title-" + komponistObj.id);
+                tdCheckbox.appendChild(inputCheckbox);
+                tr.appendChild(tdCheckbox);
+
+                let tdKomponist = document.createElement("td");
+                tdKomponist.innerText = komponistObj.name;
+                tr.appendChild(tdKomponist);
+
+                tr.dataset.id = komponistObj.id;
+                tr.dataset.name = komponistObj.name; 
+                return tr;
+            }
 
             async function init() {
                 // Load komponist from Backend
@@ -268,12 +306,13 @@
                 }
             }
             async function addComposer(){
+                alert("hallo"); 
                 bodyObj = {}
                 if (input_add_composer.value.trim() == "") {
                     // TODO: Fehlermeldung: Kein Titel eingegeben
                     return;
                 }
-                bodyObj.composer = input_add_composer.value.trim(); 
+                bodyObj.name = input_add_composer.value.trim(); 
                 console.log(JSON.stringify(bodyObj)); 
                 const response = await fetch("http://localhost:8000/api/komponist", {
                     method: 'POST', 
@@ -292,9 +331,9 @@
                 addTableEntry(response.body);
 
                 if (response.status == 200) {
-                    showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
+                    //showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
                 } else {
-                    showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
+                    //showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
                 }
                 alert("im AddComposer")
             }
