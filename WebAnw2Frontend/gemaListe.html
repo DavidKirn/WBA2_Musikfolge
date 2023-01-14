@@ -69,9 +69,7 @@
                             <button id="btn-vereinsdaten-aendern" type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalVereinsdaten">Vereinsdaten ändern</button>
                         </div>
                         <div class="col-6 col-md-4">
-                            <a href=erzeugteGemaListe.html target="_blank">
-                                <button type="button" class="btn btn-secondary w-100" id="btn-create-GemaListe" disabled>GEMA-Liste erstellen</button>
-                            </a>
+                            <button type="button" class="btn btn-secondary w-100" id="btnCreateGemaListe" disabled>GEMA-Liste erstellen</button>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center pt-3">
@@ -143,6 +141,146 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="modalGemaListe" tabindex="-1" aria-labelledby="modalGemaListeLable" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header noPrint">
+                        <h1 class="modal-title fs-5" id="modalGemaListeLable">GEMA-Liste</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <h4>GEMA-Musikfolge</h4>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <h5>Angaben zur Veranstaltung</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="form-label">Name des Veranstalters</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row pt-3">
+                            <label class="form-label">Anschrift</label>
+                            <div class="col-9">
+                                <label class="form-label">Straße</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-3">
+                                <label class="form-label">Hausnummer</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label class="form-label">PLZ</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-9">
+                                <label class="form-label">Ort</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row pt-3">
+                            <div class="col-6">
+                                <label class="form-label">Art der Veranstaltung</label>
+                                <select class="form-select">
+                                    <option selected>Frühschoppen</option>
+                                    <option>Feierabendhock</option>
+                                    <option>Konzert</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row pt-3">
+                            <label class="form-label">Zeitpunkt der Veranstaltung</label>
+                            <div class="col-4">
+                                <label class="form-label">Datum</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">Uhrzeit</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <h5>Angaben zum Verein</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="form-label">Name des Vereins</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Name des Musikleiters</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row pt-3">
+                            <label class="form-label">Anschrift</label>
+                            <div class="col-9">
+                                <label class="form-label">Straße</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-3">
+                                <label class="form-label">Hausnummer</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label class="form-label">PLZ</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-9">
+                                <label class="form-label">Ort</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row pt-3">
+                            <div class="col-4">
+                                <label class="form-label">Anzahl der Musizierenden</label>
+                                <input type="text" class="form-control" value="35">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">Art der Besetzung</label>
+                                <input type="text" class="form-control" value="Blasorchester">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">GEMA-Mitglieds-Nr</label>
+                                <input type="text" class="form-control" value="234567">
+                            </div>
+                        </div>
+                        <hr class="noPrint">
+                        <div class="row">
+                            <h5>Angaben zur Musiknutzung</h5>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th></th>
+                                    <th>Titel</th>
+                                    <th>Komponist</th>
+                                    <th>Bearbeiter</th>
+                                    <th>Verlag</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-titles-popup">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer noPrint">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zurück</button>
+                        <button type="button" class="btn btn-primary" id="btnPopupPrint" onClick="window.print()">GEMA-Liste drucken</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
     <script>
         const verein = [{
@@ -160,17 +298,29 @@
 
         const inputSearch = document.querySelector("#inputSearch");
 
+        const formGemaListe = document.querySelector("#formGemaListe");
+
+        const modalGemaListe = new bootstrap.Modal("#modalGemaListe");
+
         const btnVereinsdaten = document.querySelector('#btn-vereinsdaten-aendern');
-        const btnGemaListe = document.querySelector('#btn-create-GemaListe');
+        const btnGemaListe = document.querySelector('#btnCreateGemaListe');
         const tableTitles = document.querySelector('#table-titles');
+        const tableTitlesPopup = document.querySelector('#table-titles-popup');
         const save = document.querySelector('#btn_save_Vereinsdaten');
 
         window.addEventListener("DOMContentLoaded", (event) => {
             init();
 
-            btnVereinsdaten.addEventListener('click',showVereinsdaten);
+            btnVereinsdaten.addEventListener("click", showVereinsdaten);
 
-            save.addEventListener('click',checkVereinsdaten);
+            btnGemaListe.addEventListener("click", (event) => {
+                const items = getSelectedItems();
+                createGEMATableEntries(items);
+                
+                modalGemaListe.show();
+            });
+
+            save.addEventListener("click", checkVereinsdaten);
 
             inputSearch.addEventListener("input", (event) => {
                 searchTitle();
@@ -188,6 +338,47 @@
             });
 
             updateButtonStates();
+        }
+
+        function getSelectedItems() {
+            let selectedElements = document.querySelectorAll("tr.selected");
+            let items = [];
+            selectedElements.forEach((element) => {
+                items.push(element.dataset);
+            });
+            return items;
+        }
+
+        function createGEMATableEntries(titles) {
+            tableTitlesPopup.innerHTML = "";
+
+            let i = 1;
+            titles.forEach((titleObj) => {
+                let tr = document.createElement("tr");
+            
+                let tdNr = document.createElement("td");
+                tdNr.innerText = i + ".";
+                tr.appendChild(tdNr);
+
+                let tdTitel = document.createElement("td");
+                tdTitel.innerText = titleObj.titel;
+                tr.appendChild(tdTitel);
+
+                let tdKomponist = document.createElement("td");
+                tdKomponist.innerText = titleObj.komponist_name;
+                tr.appendChild(tdKomponist);
+
+                let tdBearbeiter = document.createElement("td");
+                tdBearbeiter.innerText = titleObj.bearbeiter_name;
+                tr.appendChild(tdBearbeiter);
+
+                let tdVerlag = document.createElement("td");
+                tdVerlag.innerText = titleObj.verlag_name;
+                tr.appendChild(tdVerlag);
+
+                tableTitlesPopup.appendChild(tr);
+                i++;
+            });
         }
 
         function createTableEntry(titleObj) {

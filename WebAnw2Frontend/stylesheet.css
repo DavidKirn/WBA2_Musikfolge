@@ -19,10 +19,12 @@ html, body {
     flex: 1;
     overflow: auto;
 }
+.printPageBreakBefore {
+    page-break-before: always;
+}
 @media print
 {
-    .noPrint
-    {
+    .noPrint {
         display: none !important
     }
 }
