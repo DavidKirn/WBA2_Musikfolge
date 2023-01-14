@@ -191,14 +191,13 @@
             const btnAdd = document.querySelector("#btn-add");
             const btnDelete = document.querySelector("#btn-delete");
 
+            const btnPopupKomponistEdit = document.querySelector('#btnPopup-komponist-edit'); 
             const btnPopupKomponistAdd = document.querySelector('#btnPopup-komponist-add'); 
             const btnPopupKomponistDelete = document.querySelector('#btnPopup-komponist-delete'); 
-            const btnPopupKomponistEdit = document.querySelector('#btnPopup-komponist-edit'); 
 
             const inputKomponistEdit = document.querySelector('#input-komponist-edit'); 
-            const composerToDelete = document.querySelector("#komponist-to-delete"); 
-
             const inputKomponistAdd = document.querySelector("#input-komponist-add"); 
+            const komponistToDelete = document.querySelector("#komponist-to-delete"); 
 
             window.addEventListener("DOMContentLoaded", (event) => {
                 init();
@@ -207,34 +206,125 @@
                     console.log("btnEdit Composer pressed"); 
                     let selectedItem = getSelectedItem(); 
                     inputKomponistEdit.value = selectedItem.komponist_name; 
-                })
-            });
-
-            btnDelete.addEventListener('click', (event) => {
+                }); 
+                btnDelete.addEventListener('click', (event) => {
                 let selectedItems = getAllSelectedItems();
                 selectedItems.forEach((Element) => {
                     const p = document.createElement('p');
                     p.innerText = Element.komponist_name;
-                    composerToDelete.append(p);
+                    komponistToDelete.append(p);
+                    });
                 });
             });
 
-            btnPopupKomponistAdd.addEventListener("click", (event) => {
-                    addComposer();
-                });
-            
+            async function init() {
+                // Load komponist from Backend
+                const komponistArr = await fetch('http://localhost:8000/api/komponist/alle')
+                    .then((response) => response.json());
+
+                // Create table row elements
+                renderTableEntries(komponistArr);
+
+                updateButtonStates();
+            }
+
             btnPopupKomponistEdit.addEventListener("click", (event) => {
                     editComposer();
                 });
-
+            btnPopupKomponistAdd.addEventListener("click", (event) => {
+                    addComposer();
+                });
             btnPopupKomponistDelete.addEventListener("click", (event) => {
                     deleteComposer();
                 });
 
+            async function editComposer(){
+                composerItemData = {};
+                console.log('in edit Composer In Backend');
+
+                let selectedItem = getSelectedItem();
+                composerItemData.id = selectedItem.komponist_id;
+
+                if (inputKomponistEdit.value != "" & inputKomponistEdit.valuel !=" "){
+                    composerItemData.name = inputKomponistEdit.value;
+                }
+                console.log(JSON.stringify(composerItemData));
+                const response = await fetch("http://localhost:8000/api/komponist", {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(composerItemData)
+                })
+                .then((response) => reesponse.json().then((data) => (
+                    {
+                        status : response.status,
+                        body: data
+                    }
+                )));
+            }
+
+            async function addComposer(){
+                bodyObj = {}
+                if (inputKomponistAdd.value.trim() == "") {
+                    // TODO: Fehlermeldung: Kein Titel eingegeben
+                    return;
+                }
+                bodyObj.name = inputKomponistAdd.value.trim(); 
+                console.log(JSON.stringify(bodyObj)); 
+                const response = await fetch("http://localhost:8000/api/komponist", {
+                    method: 'POST', 
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(bodyObj)
+                })
+                .then((response)=> response.json().then((data)=>(
+                    {
+                        status: response.status, 
+                        body: data
+                    }
+                )));
+                console.log("Komponist hinzufügen Response: " + response.status);
+                addTableEntry(response.body);
+
+                if (response.status == 200) {
+                    //showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
+                } else {
+                    //showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
+                }
+                alert("im AddComposer")
+            }
+
+            async function deleteComposer() {
+                let selectedItems = getAllSelectedItems();
+                selectedItems.forEach(async element => {
+                    const response= await fetch("http://localhost:8000/api/komponist/" + element.komponist_id,{
+                    method: "DELETE"
+                    })
+                    .then((response) => response.hson().then((data) => (
+                        {
+                            status: response.status,
+                            body: data
+                        }
+                    ))); 
+                });
+
+                console.log("Komponist löschen Response: " + response.status);
+                deleteTableEntry(response.body.eintrag);
+                modalTitleDelete.hide();
+
+                if (response.status == 200) {
+                    //showSuccessMessage("Komponist wurde erfolgreich gelöscht.");
+                } else {
+                    //showFailureMessage("Beim Löschen des Komponisten ist etwas schiefgelaufen!");
+                }
+            }
+
             function addTableEntry(komponistObj) {
                 tableKomponisten.appendChild(createTableEntry(komponistObj));
             }
-
+            
             function createTableEntry(komponistObj) {
                 let tr = document.createElement("tr");
                 tr.setAttribute("id", "table-row-title-" + komponistObj.id);
@@ -267,27 +357,6 @@
                 tr.dataset.id = komponistObj.id;
                 tr.dataset.name = komponistObj.name; 
                 return tr;
-            }
-
-            async function init() {
-                // Load komponist from Backend
-                const komponistArr = await fetch('http://localhost:8000/api/komponist/alle')
-                    .then((response) => response.json());
-
-                // Create table row elements
-                renderTableEntries(komponistArr);
-
-                updateButtonStates();
-            }
-
-            function showSuccessMessage(message) {
-                toastSuccessMessage.innerText = message;
-                toastSuccess.show();
-            }
-
-            function showFailureMessage(message) {
-                toastFailureMessage.innerText = message;
-                toastFailure.show();
             }
 
             function renderTableEntries(komponistArr) {
@@ -364,87 +433,17 @@
                 return Elements;
             }
 
-            async function addComposer(){
-                bodyObj = {}
-                if (inputKomponistAdd.value.trim() == "") {
-                    // TODO: Fehlermeldung: Kein Titel eingegeben
-                    return;
-                }
-                bodyObj.name = inputKomponistAdd.value.trim(); 
-                console.log(JSON.stringify(bodyObj)); 
-                const response = await fetch("http://localhost:8000/api/komponist", {
-                    method: 'POST', 
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(bodyObj)
-                })
-                .then((response)=> response.json().then((data)=>(
-                    {
-                        status: response.status, 
-                        body: data
-                    }
-                )));
-                console.log("Komponist hinzufügen Response: " + response.status);
-                addTableEntry(response.body);
+            
 
-                if (response.status == 200) {
-                    //showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
-                } else {
-                    //showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
-                }
-                alert("im AddComposer")
+            
+            function showSuccessMessage(message) {
+                toastSuccessMessage.innerText = message;
+                toastSuccess.show();
             }
 
-            async function editComposer(){
-                composerItemData = {};
-                console.log('in edit Composer In Backend');
-
-                let selectedItem = getSelectedItem();
-                composerItemData.id = selectedItem.komponist_id;
-
-                if (inputKomponistEdit.value != "" & inputKomponistEdit.valuel !=" "){
-                    composerItemData.name = inputKomponistEdit.value;
-                }
-                console.log(JSON.stringify(composerItemData));
-                const response = await fetch("http://localhost:8000/api/komponist", {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(composerItemData)
-                })
-                .then((response) => reesponse.json().then((data) => (
-                    {
-                        status : response.status,
-                        body: data
-                    }
-                )));
-            }
-
-            async function deleteComposer() {
-                let selectedItems = getAllSelectedItems();
-                selectedItems.forEach(async element => {
-                    const response= await fetch("http://localhost:8000/api/komponist/" + element.komponist_id,{
-                    method: "DELETE"
-                    })
-                    .then((response) => response.hson().then((data) => (
-                        {
-                            status: response.status,
-                            body: data
-                        }
-                    ))); 
-                });
-
-                console.log("Komponist löschen Response: " + response.status);
-                deleteTableEntry(response.body.eintrag);
-                modalTitleDelete.hide();
-
-                if (response.status == 200) {
-                    //showSuccessMessage("Komponist wurde erfolgreich gelöscht.");
-                } else {
-                    //showFailureMessage("Beim Löschen des Komponisten ist etwas schiefgelaufen!");
-                }
+            function showFailureMessage(message) {
+                toastFailureMessage.innerText = message;
+                toastFailure.show();
             }
         </script>
 
