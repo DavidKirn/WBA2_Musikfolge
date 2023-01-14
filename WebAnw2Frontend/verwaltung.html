@@ -121,12 +121,12 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Komponist</label>
-                                <input type="text" class="form-control" id="edit-Composer-Input">
+                                <input type="text" class="form-control" id="input-komponist-edit">
                             </div>
 
                             <div class="modal-footer">
                                 <a href="verwaltung.html" class="text-decoration-none-text-body">
-                                    <button type="button" class="btn btn-primary" id="btnPopupKomponistEdit">Ändern</button>
+                                    <button type="button" class="btn btn-primary" id="btnPopup-komponist-edit">Ändern</button>
                                 </a>
                             </div>
                         </div>
@@ -148,10 +148,10 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Komponist</label>
-                                <input type="text" class="form-control" id="input_add_composer">
+                                <input type="text" class="form-control" id="input-komponist-add">
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" id="btnPopupKomponistAdd">Hinzufügen</button>
+                                <button type="button" class="btn btn-primary" id="btnPopup-komponist-add">Hinzufügen</button>
                             </div>
                         </div>
                     </div>
@@ -168,12 +168,12 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="mb-3" id="composer-to-delete">
+                            <div class="mb-3" id="komponist-to-delete">
                                 <label class="form-label">Komponist wirklich löschen?</label> 
                             </div>
                             <div class="modal-footer">
                                 <a href="verwaltung.html" class="text-decoration-none-text-body">
-                                    <button type="button" class="btn btn-primary" id="btn_delete_composer">Löschen bestätigen</button>
+                                    <button type="button" class="btn btn-primary" id="btnPopup-komponist-delete">Löschen bestätigen</button>
                                 </a>
                             </div>
                         </div>
@@ -186,18 +186,19 @@
         
         <script>
             const tableKomponisten = document.querySelector("#table-komponist");
+
             const btnEdit = document.querySelector("#btn-edit");
             const btnAdd = document.querySelector("#btn-add");
             const btnDelete = document.querySelector("#btn-delete");
 
-            const btnPopupKomponistAdd = document.querySelector('#btnPopupKomponistAdd'); 
-            const btnPopupKomponistDelete = document.querySelector('#btn_delete_composer'); 
-            const btnPopupKomponistEdit = document.querySelector('#btnPopupKomponistEdit'); 
+            const btnPopupKomponistAdd = document.querySelector('#btnPopup-komponist-add'); 
+            const btnPopupKomponistDelete = document.querySelector('#btnPopup-komponist-delete'); 
+            const btnPopupKomponistEdit = document.querySelector('#btnPopup-komponist-edit'); 
 
-            const editComposerInput = document.querySelector('#edit-Composer-Input'); 
-            const composerToDelete = document.querySelector("#composer-to-delete"); 
+            const inputKomponistEdit = document.querySelector('#input-komponist-edit'); 
+            const composerToDelete = document.querySelector("#komponist-to-delete"); 
 
-            const input_add_composer = document.querySelector("#input_add_composer"); 
+            const inputKomponistAdd = document.querySelector("#input-komponist-add"); 
 
             window.addEventListener("DOMContentLoaded", (event) => {
                 init();
@@ -205,7 +206,7 @@
                 btnEdit.addEventListener('click', (event)=>{
                     console.log("btnEdit Composer pressed"); 
                     let selectedItem = getSelectedItem(); 
-                    editComposerInput.value = selectedItem.komponist_name; 
+                    inputKomponistEdit.value = selectedItem.komponist_name; 
                 })
             });
 
@@ -365,11 +366,11 @@
 
             async function addComposer(){
                 bodyObj = {}
-                if (input_add_composer.value.trim() == "") {
+                if (inputKomponistAdd.value.trim() == "") {
                     // TODO: Fehlermeldung: Kein Titel eingegeben
                     return;
                 }
-                bodyObj.name = input_add_composer.value.trim(); 
+                bodyObj.name = inputKomponistAdd.value.trim(); 
                 console.log(JSON.stringify(bodyObj)); 
                 const response = await fetch("http://localhost:8000/api/komponist", {
                     method: 'POST', 
@@ -402,8 +403,8 @@
                 let selectedItem = getSelectedItem();
                 composerItemData.id = selectedItem.komponist_id;
 
-                if (editComposerInput.value != "" & editComposerInput.valuel !=" "){
-                    composerItemData.name = editComposerInput.value;
+                if (inputKomponistEdit.value != "" & inputKomponistEdit.valuel !=" "){
+                    composerItemData.name = inputKomponistEdit.value;
                 }
                 console.log(JSON.stringify(composerItemData));
                 const response = await fetch("http://localhost:8000/api/komponist", {
