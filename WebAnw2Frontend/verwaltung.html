@@ -89,10 +89,10 @@
             <div class="container text-center py-3">
                 <div class="row justify-content-center">
                     <div class="col-4 col-md-3">
-                            <button type="button" class="btn btn-secondary w-100" id="btn-edit" data-bs-toggle="modal" data-bs-target="#modalEditComposer">Bearbeiten</button>
+                            <button type="button" class="btn btn-secondary w-100" id="btn-edit">Bearbeiten</button>
                     </div>
                     <div class="col-4 col-md-3">
-                            <button type="button" class="btn btn-secondary w-100" id="btn-add" data-bs-toggle="modal" data-bs-target="#modalAddComposer">Hinzufügen</button>
+                            <button type="button" class="btn btn-secondary w-100" id="btn-add">Hinzufügen</button>
                     </div>
                     <div class="col-4 col-md-3">
                             <button type="button" class="btn btn-secondary w-100" id="btn-delete" data-bs-toggle="modal" data-bs-target="#modalDeleteComposer">Löschen</button>
@@ -106,7 +106,7 @@
         <!-- Modals-->
         <!-- Modal Edit Composer-->
         <div class="bd-example bg-light">
-            <div class="modal fade" id="modalEditComposer" tabindex="-1" aria-labelledby="modalEditComposerLabel" aria-hidden="true">
+            <div class="modal fade" id="modal-komponist-edit" tabindex="-1" aria-labelledby="modalEditComposerLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -133,7 +133,7 @@
         </div>
         <!-- Modal Add Composer-->
         <div class="bd-example bg-light">
-            <div class="modal fade" id="modalAddComposer" tabindex="-1" aria-labelledby="modalAddComposerLabel" aria-hidden="true">
+            <div class="modal fade" id="modal-komponist-add" tabindex="-1" aria-labelledby="modalAddComposerLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -157,7 +157,7 @@
         </div>
         <!-- Modal Delete Composer-->
         <div class="bd-example bg-light">
-            <div class="modal fade" id="modalDeleteComposer" tabindex="-1" aria-labelledby="modalDeleteComposerLabel" aria-hidden="true">
+            <div class="modal fade" id="modal-komponist-delete" tabindex="-1" aria-labelledby="modalDeleteComposerLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -196,6 +196,10 @@
             const inputKomponistAdd = document.querySelector("#input-komponist-add"); 
             const komponistToDelete = document.querySelector("#komponist-to-delete"); 
 
+            const modalKomponistEdit = document.querySelector('#modal-komponist-edit'); 
+            const modalKomponistAdd = document.querySelector('#modal-komponist-add'); 
+            const modalKomponistDelete = document.querySelector('#modal-komponist-delete'); 
+
             const inputSearch = document.querySelector('#input-search'); 
 
             window.addEventListener("DOMContentLoaded", (event) => {
@@ -205,6 +209,11 @@
                     console.log("btnEdit Composer pressed"); 
                     let selectedItem = getSelectedItem(); 
                     inputKomponistEdit.value = selectedItem.komponist_name; 
+                    modalKomponistEdit.show(); 
+                }); 
+                btnAdd.addEventListener('click', (event)=>{
+                    console.log("btnAdd Composer pressed"); 
+                    modalKoponistAdd.show(); 
                 }); 
                 btnDelete.addEventListener('click', (event) => {
                 let selectedItems = getAllSelectedItems();
@@ -212,6 +221,7 @@
                     const p = document.createElement('p');
                     p.innerText = Element.komponist_name;
                     komponistToDelete.append(p);
+                    modalKomponistDelete.show(); 
                     });
                 });
             });
@@ -264,6 +274,7 @@
                         body: data
                     }
                 )));
+                modalKomponistEdit.hide(); 
             }
 
             async function addComposer(){
@@ -289,13 +300,13 @@
                 )));
                 console.log("Komponist hinzufügen Response: " + response.status);
                 addTableEntry(response.body);
+                modalKoponistAdd.hide(); 
 
                 if (response.status == 200) {
                     //showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
                 } else {
                     //showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
                 }
-                alert("im AddComposer")
             }
 
             async function deleteComposer() {
@@ -310,11 +321,11 @@
                             body: data
                         }
                     ))); 
+                    modalKomponistDelete.hide(); 
                 });
 
                 console.log("Komponist löschen Response: " + response.status);
                 deleteTableEntry(response.body.eintrag);
-                modalTitleDelete.hide();
 
                 if (response.status == 200) {
                     //showSuccessMessage("Komponist wurde erfolgreich gelöscht.");
