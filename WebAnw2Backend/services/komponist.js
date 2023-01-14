@@ -24,9 +24,9 @@ serviceRouter.get('/komponist/such/:name', function(request, response) {
 
     const komponistDao = new KomponistDao(request.app.locals.dbConnection);
     try {
-        var obj = komponistDao.loadByName(request.params.name);
+        var arr = komponistDao.loadByName(request.params.name);
         console.log('Service Komponist: Record loaded');
-        response.status(200).json(obj);
+        response.status(200).json(arr);
     } catch (ex) {
         console.error('Service Komponist: Error loading searched records. Exception occured: ' + ex.message);
         response.status(400).json({ 'fehler': true, 'nachricht': ex.message });

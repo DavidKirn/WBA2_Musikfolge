@@ -39,11 +39,8 @@
 
             <div class="content-header container">
                 <div class="row my-3">
-                    <div class="col-8">
-                        <input class="form-control" type="text" name="search" placeholder="Suche">
-                    </div>
-                    <div class="col-4">
-                        <button type="button" class="btn btn-secondary w-100">Suchen</button>
+                    <div class="col-12">
+                        <input class="form-control" type="text" name="search" id="input-search" placeholder="Suche">
                     </div>
                 </div>
                 <hr>
@@ -199,6 +196,8 @@
             const inputKomponistAdd = document.querySelector("#input-komponist-add"); 
             const komponistToDelete = document.querySelector("#komponist-to-delete"); 
 
+            const inputSearch = document.querySelector('#input-search'); 
+
             window.addEventListener("DOMContentLoaded", (event) => {
                 init();
 
@@ -237,6 +236,9 @@
             btnPopupKomponistDelete.addEventListener("click", (event) => {
                     deleteComposer();
                 });
+            inputSearch.addEventListener("input", (event)=>{
+                    search(); 
+                }); 
 
             async function editComposer(){
                 composerItemData = {};
@@ -321,10 +323,24 @@
                 }
             }
 
+            async function search(){
+                tableKomponisten.innerHTML = ""; 
+                let link = 'http://localhost:8000/api/komponist/such/' + inputSearch.value; 
+                if(inputSearch.value.trim()==""){
+                    link = 'http://localhost:8000/api/komponist/alle'
+                }
+                const komponistArr = await fetch(link)
+                    .then((response) => response.json());
+                komponistArr.forEach((komponist)=>{
+                    addTableEntry(komponist); 
+                }); 
+                updateButtonStates();
+            }
+
             function addTableEntry(komponistObj) {
                 tableKomponisten.appendChild(createTableEntry(komponistObj));
             }
-            
+
             function createTableEntry(komponistObj) {
                 let tr = document.createElement("tr");
                 tr.setAttribute("id", "table-row-title-" + komponistObj.id);
