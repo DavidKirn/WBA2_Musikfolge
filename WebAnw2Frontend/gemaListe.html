@@ -7,7 +7,6 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <link href="stylesheet.css" rel="stylesheet" type="text/css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-        
     </head>
     <body>
         <div class="wrapper">
@@ -141,146 +140,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="modalGemaListe" tabindex="-1" aria-labelledby="modalGemaListeLable" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content">
-                    <div class="modal-header noPrint">
-                        <h1 class="modal-title fs-5" id="modalGemaListeLable">GEMA-Liste</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col">
-                                <h4>GEMA-Musikfolge</h4>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <h5>Angaben zur Veranstaltung</h5>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="form-label">Name des Veranstalters</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row pt-3">
-                            <label class="form-label">Anschrift</label>
-                            <div class="col-9">
-                                <label class="form-label">Straße</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-3">
-                                <label class="form-label">Hausnummer</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                                <label class="form-label">PLZ</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-9">
-                                <label class="form-label">Ort</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row pt-3">
-                            <div class="col-6">
-                                <label class="form-label">Art der Veranstaltung</label>
-                                <select class="form-select">
-                                    <option selected>Frühschoppen</option>
-                                    <option>Feierabendhock</option>
-                                    <option>Konzert</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row pt-3">
-                            <label class="form-label">Zeitpunkt der Veranstaltung</label>
-                            <div class="col-4">
-                                <label class="form-label">Datum</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-4">
-                                <label class="form-label">Uhrzeit</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <h5>Angaben zum Verein</h5>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="form-label">Name des Vereins</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">Name des Musikleiters</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row pt-3">
-                            <label class="form-label">Anschrift</label>
-                            <div class="col-9">
-                                <label class="form-label">Straße</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-3">
-                                <label class="form-label">Hausnummer</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                                <label class="form-label">PLZ</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-9">
-                                <label class="form-label">Ort</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row pt-3">
-                            <div class="col-4">
-                                <label class="form-label">Anzahl der Musizierenden</label>
-                                <input type="text" class="form-control" value="35">
-                            </div>
-                            <div class="col-4">
-                                <label class="form-label">Art der Besetzung</label>
-                                <input type="text" class="form-control" value="Blasorchester">
-                            </div>
-                            <div class="col-4">
-                                <label class="form-label">GEMA-Mitglieds-Nr</label>
-                                <input type="text" class="form-control" value="234567">
-                            </div>
-                        </div>
-                        <hr class="noPrint">
-                        <div class="row">
-                            <h5>Angaben zur Musiknutzung</h5>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr class="table-secondary">
-                                    <th></th>
-                                    <th>Titel</th>
-                                    <th>Komponist</th>
-                                    <th>Bearbeiter</th>
-                                    <th>Verlag</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-titles-popup">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer noPrint">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zurück</button>
-                        <button type="button" class="btn btn-primary" id="btnPopupPrint" onClick="window.print()">GEMA-Liste drucken</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </body>
     <script>
         const verein = [{
@@ -315,9 +174,8 @@
 
             btnGemaListe.addEventListener("click", (event) => {
                 const items = getSelectedItems();
-                createGEMATableEntries(items);
-                
-                modalGemaListe.show();
+                encodedTitlesStr = btoa(JSON.stringify(items));
+                window.open("./erzeugteGemaListe.html?titles=" + encodedTitlesStr, '_blank').focus();
             });
 
             save.addEventListener("click", checkVereinsdaten);
@@ -347,38 +205,6 @@
                 items.push(element.dataset);
             });
             return items;
-        }
-
-        function createGEMATableEntries(titles) {
-            tableTitlesPopup.innerHTML = "";
-
-            let i = 1;
-            titles.forEach((titleObj) => {
-                let tr = document.createElement("tr");
-            
-                let tdNr = document.createElement("td");
-                tdNr.innerText = i + ".";
-                tr.appendChild(tdNr);
-
-                let tdTitel = document.createElement("td");
-                tdTitel.innerText = titleObj.titel;
-                tr.appendChild(tdTitel);
-
-                let tdKomponist = document.createElement("td");
-                tdKomponist.innerText = titleObj.komponist_name;
-                tr.appendChild(tdKomponist);
-
-                let tdBearbeiter = document.createElement("td");
-                tdBearbeiter.innerText = titleObj.bearbeiter_name;
-                tr.appendChild(tdBearbeiter);
-
-                let tdVerlag = document.createElement("td");
-                tdVerlag.innerText = titleObj.verlag_name;
-                tr.appendChild(tdVerlag);
-
-                tableTitlesPopup.appendChild(tr);
-                i++;
-            });
         }
 
         function createTableEntry(titleObj) {
@@ -457,7 +283,7 @@
             });
         }
 
-        function showVereinsdaten(){
+        function showVereinsdaten() {
             verein.forEach(v => {
                 const NameKapelle = document.querySelector('#NameKapelle');
                 NameKapelle.value = v.Vereinsname;

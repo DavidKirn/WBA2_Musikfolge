@@ -11,7 +11,6 @@ class AnschriftDao {
     }
 
     loadById(id) {
-
         var sql = 'SELECT * FROM Anschrift WHERE id=?';
         var statement = this._conn.prepare(sql);
         var result = statement.get(id);
@@ -23,12 +22,11 @@ class AnschriftDao {
     }
 
     loadAll() {
-
         var sql = 'SELECT * FROM Anschrift';
         var statement = this._conn.prepare(sql);
         var result = statement.all();
 
-        if (helper.isArrayEmpty(result)) 
+        if (helper.isArrayEmpty(result))
             return [];
 
         return result;

@@ -3,322 +3,141 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Gema-Liste</title>
+        <title>GEMA-Liste</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <link href="stylesheet.css" rel="stylesheet" type="text/css">
+        <script src="./urlParameter.js"></script>
     </head>
     <body>
-        <div class="container">
-            <div class="header container py-3 row">
-                <div class="col">
-                    <h4>Gema-Musikfolge</h4>
+        <div class="px-5">
+            <div class="row pt-3">
+                <div class="col-8">
+                    <h4>GEMA-Musikfolge</h4>
                 </div>
-                <div class="col">
-                    <button onClick="window.print()" class="noPrint btn btn-danger w-100 noPrint" >
-                        Gema-Liste drucken
+                <div class="col-4">
+                    <button onClick="window.print()" class="noPrint btn btn-danger w-100">
+                        GEMA-Liste drucken
                     </button>
                 </div>
             </div>
-            <div class="header container text-left py-3">
-                <h6>Angaben zur Veranstaltung</h6>
-                <div class="row">
-                    <div class="col">
-                        <label class="form-label">Name des Veranstalters</label>
-                        <input type="text" class="form-control" >
-                    </div>
-                </div>
-                <div class="row">
-                    <h7>Anschrift</h7>
-
-                    <div class="col">
-                        <label class="form-lable">Straße</label>
-                        <input type="text" class="form-control" >
-                    </div>
-                    <div class="col-3">
-                        <label class="form-lable">Hausnummer</label>
-                        <input type="text" class="form-control" >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        <label class="form-lable">Plz</label>
-                        <input type="text" class="form-control" >
-                    </div>
-                    <div class="col">
-                        <label class="form-lable">Ort</label>
-                        <input type="text" class="form-control" >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <label class="form-label">Art der Veranstaltung</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Frühschoppen</option>
-                            <option>Feierabendhock</option>
-                            <option>Konzert</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <label class="form-label">Tag</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                            <option>11</option>
-                            <option>12</option>
-                            <option>13</option>
-                            <option>14</option>
-                            <option>15</option>
-                            <option>16</option>
-                            <option>17</option>
-                            <option>18</option>
-                            <option>19</option>
-                            <option>20</option>
-                            <option>21</option>
-                            <option>22</option>
-                            <option>23</option>
-                            <option>24</option>
-                            <option>25</option>
-                            <option>26</option>
-                            <option>27</option>
-                            <option>28</option>
-                            <option>29</option>
-                            <option>30</option>
-                            <option>31</option>
-                        </select>
-                    </div>
-                    <div class="col-3">
-                        <label class="form-label">Monat</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Januar</option>
-                            <option>Februar</option>
-                            <option>März</option>
-                            <option>April</option>
-                            <option>Mai</option>
-                            <option>Juni</option>
-                            <option>Juli</option>
-                            <option>August</option>
-                            <option>September</option>
-                            <option>Oktober</option>
-                            <option>November</option>
-                            <option>Dezember</option>
-                        </select>
-                    </div>
-                    <div class="col-3">
-                        <label class="form-label">Jahr</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option>2016</option>
-                            <option>2017</option>
-                            <option>2018</option>
-                            <option>2019</option>
-                            <option>2020</option>
-                            <option>2021</option>
-                            <option selected>2022</option>
-                            <option>2023</option>
-                            <option>2024</option>
-                            <option>2025</option>
-                            <option>2026</option>
-                            <option>2027</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-3">
-                        <label class="form-label">Uhrzeit von:</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                            <option>11</option>
-                            <option>12</option>
-                            <option>13</option>
-                            <option>14</option>
-                            <option>15</option>
-                            <option>16</option>
-                            <option>17</option>
-                            <option>18</option>
-                            <option>19</option>
-                            <option>20</option>
-                            <option>21</option>
-                            <option>22</option>
-                            <option>23</option>
-                            <option>24</option>
-                        </select>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>00</option>
-                            <option>05</option>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                            <option>25</option>
-                            <option>30</option>
-                            <option>35</option>
-                            <option>40</option>
-                            <option>45</option>
-                            <option>50</option>
-                            <option>55</option>
-                        </select>
-                    </div>
-                    <div class="col-3">
-                        <label class="form-label">Uhrzeit bis:</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                            <option>11</option>
-                            <option>12</option>
-                            <option>13</option>
-                            <option>14</option>
-                            <option>15</option>
-                            <option>16</option>
-                            <option>17</option>
-                            <option>18</option>
-                            <option>19</option>
-                            <option>20</option>
-                            <option>21</option>
-                            <option>22</option>
-                            <option>23</option>
-                            <option>24</option>
-                        </select>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>00</option>
-                            <option>05</option>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                            <option>25</option>
-                            <option>30</option>
-                            <option>35</option>
-                            <option>40</option>
-                            <option>45</option>
-                            <option>50</option>
-                            <option>55</option>
-                        </select>
-                    </div>
-                    
+            <hr>
+            <div class="row">
+                <h5>Angaben zur Veranstaltung</h5>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label class="form-label">Name des Veranstalters</label>
+                    <input type="text" class="form-control">
                 </div>
             </div>
-            <div class="header container text-left py-3">
-                <h6>Angaben zum Verein</h6>
-                <div class="row pt-3">
-                    <div class="col-3">
-                        <label>Name der Kapelle</label>
-                    </div>
-                    <div class="col" id="NameKapelle">
-                        
-                    </div>
+            <div class="row pt-3">
+                <label class="form-label">Anschrift</label>
+                <div class="col-9">
+                    <label class="form-label">Straße</label>
+                    <input type="text" class="form-control">
                 </div>
-                <div class="row pt-3">
-                    <div class="col-3">
-                        <label>Name des Musikleiters</label>
-                    </div>
-                    <div class="col-3" id="MusikleiterVname"></div>
-                    <div class="col-3" id="MusikleiterNname"></div>
-                </div>
-                <br/>
-                <div class="row pt-3">
-                    <div class="col-3">
-                        <label>Anschrift</label>
-                    </div>
-                </div>
-                <div class="row pt-2">
-                    <div class="col-3" id="StrasseVerein"></div>
-                    <div class="col-3" id="HNrVerein"></div>
-                </div>
-                <div class="row pt-2">
-                    <div class="col-3" id="PlzVerein"></div>
-                    <div class="col-3" id="OrtVerein"></div>
-                </div>
-                <div class="row pt-3">
-                    <div class="col-3">
-                        <label>Anzahl der Musizierenden</label>
-                    </div>
-                    <div class="col-3" id="AnzMusizierende"></div>
-                </div>
-                <div class="row pt-3">
-                    <div class="col-3">
-                        <label>Art der Besetzung</label>
-                    </div>
-                    <div class="col" id="Besetzung"></div>
-                </div>
-                <div class="row pt-3">
-                    <div class="col-3">
-                        <label>GEMA-Mitglieds-Nr</label>
-                    </div>
-                    <div class="col" id="GemaMitgliedNr">
-                    </div>
+                <div class="col-3">
+                    <label class="form-label">Hausnummer</label>
+                    <input type="text" class="form-control">
                 </div>
             </div>
-            <div class="header container text-left py-3">
-                <h6>Angaben zur Musiknutzung</h6>
-                <table class="table table-striped">
-                    <tr>
+            <div class="row">
+                <div class="col-3">
+                    <label class="form-label">PLZ</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-9">
+                    <label class="form-label">Ort</label>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+            <div class="row pt-3">
+                <div class="col-6">
+                    <label class="form-label">Art der Veranstaltung</label>
+                    <select class="form-select">
+                        <option selected>Frühschoppen</option>
+                        <option>Feierabendhock</option>
+                        <option>Konzert</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row pt-3">
+                <label class="form-label">Zeitpunkt der Veranstaltung</label>
+                <div class="col-4">
+                    <label class="form-label">Datum</label>
+                    <input type="date" class="form-control">
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Uhrzeit</label>
+                    <input type="time" class="form-control">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <h5>Angaben zum Verein</h5>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label class="form-label">Name des Vereins</label>
+                    <input type="text" class="form-control" id="inputVereinName" disabled>
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Name des Musikleiters</label>
+                    <input type="text" class="form-control" id="inputVereinMusikleiter" disabled>
+                </div>
+            </div>
+            <div class="row pt-3">
+                <label class="form-label">Anschrift</label>
+                <div class="col-9">
+                    <label class="form-label">Straße</label>
+                    <input type="text" class="form-control" id="inputVereinStraße" disabled>
+                </div>
+                <div class="col-3">
+                    <label class="form-label">Hausnummer</label>
+                    <input type="text" class="form-control" id="inputVereinHausnr" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="form-label">PLZ</label>
+                    <input type="text" class="form-control" id="inputVereinPlz" disabled>
+                </div>
+                <div class="col-9">
+                    <label class="form-label">Ort</label>
+                    <input type="text" class="form-control" id="inputVereinOrt" disabled>
+                </div>
+            </div>
+            <div class="row pt-3">
+                <div class="col-4">
+                    <label class="form-label">Anzahl der Musizierenden</label>
+                    <input type="text" class="form-control" id="inputVereinAnzahl" disabled>
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Art der Besetzung</label>
+                    <input type="text" class="form-control" id="inputVereinBesetzung" disabled>
+                </div>
+                <div class="col-4">
+                    <label class="form-label">GEMA-Mitglieds-Nr</label>
+                    <input type="text" class="form-control" id="inputVereinGemaNr" disabled>
+                </div>
+            </div>
+            <hr class="noPrint">
+            <div class="row printPageBreakBefore">
+                <h5>Angaben zur Musiknutzung</h5>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="table-secondary">
                         <th></th>
                         <th>Titel</th>
                         <th>Komponist</th>
                         <th>Bearbeiter</th>
                         <th>Verlag</th>
                     </tr>
-                    <tr>
-                        <td>1.</td>
-                        <td>Festmusik</td>
-                        <td>Richard Wagner</td>
-                        <td>R.Seifert-Kressbronn</td>
-                        <td>Studio-Verlag R.Seifert</td>
-                    </tr>
-                    <tr>
-                        <td>2.</td>
-                        <td>Polka Nr.37</td>
-                        <td>Methodej Prajka</td>
-                        <td>Siegfried Rundel</td>
-                        <td>Rundel</td>
-                    </tr>
-                    <tr>
-                        <td>3.</td>
-                        <td>Über sieben Brücken</td>
-                        <td>Ulrich Swillms</td>
-                        <td>Manfred Schneider</td>
-                        <td>Rundel</td>
-                    </tr>
-                    <tr>
-                        <td>4.</td>
-                        <td>Festmusik</td>
-                        <td>Richard Wagner</td>
-                        <td>R.Seifert-Kressbronn</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>5.</td>
-                        <td>CAN YOU ENGLISH PLEASE</td>
-                        <td>Fäaschtbänkler</td>
-                        <td>Roman Wüthrich</td>
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
+                </thead>
+                <tbody id="table-titles-popup">
+                </tbody>
+            </table>
         </div>
     </body>
     <script>
@@ -334,14 +153,72 @@
             besetzung: 'Blasorchester',
             GEMANr: 234567
         }];
-        window.addEventListener('DOMContentLoaded',(event)=>{
+
+        const tableTitlesPopup = document.querySelector('#table-titles-popup');
+
+        const inputVereinName = document.querySelector("#inputVereinName");
+        const inputVereinMusikleiter = document.querySelector("#inputVereinMusikleiter");
+        const inputVereinStraße = document.querySelector("#inputVereinStraße");
+        const inputVereinHausnr = document.querySelector("#inputVereinHausnr");
+        const inputVereinPlz = document.querySelector("#inputVereinPlz");
+        const inputVereinOrt = document.querySelector("#inputVereinOrt");
+        const inputVereinAnzahl = document.querySelector("#inputVereinAnzahl");
+        const inputVereinBesetzung = document.querySelector("#inputVereinBesetzung");
+        const inputVereinGemaNr = document.querySelector("#inputVereinGemaNr");
+
+        window.addEventListener("DOMContentLoaded", (event) => {
             init();
         });
-        function init(){
-            showVereinsdaten();
+
+        function init() {
+            if (existsUrlParameter("titles")) {
+                const decodedTitlesStr = atob(getUrlParameterValue("titles"))
+                const titles = JSON.parse(decodedTitlesStr);
+                createGEMATableEntries(titles);
+            }
+
+            setVereinsdaten();
         }
-        function showVereinsdaten(){
-            console.log("in showVereinsdaten");
+
+        function createGEMATableEntries(titles) {
+            tableTitlesPopup.innerHTML = "";
+
+            let i = 1;
+            titles.forEach((titleObj) => {
+                let tr = document.createElement("tr");
+            
+                let tdNr = document.createElement("td");
+                tdNr.innerText = i + ".";
+                tr.appendChild(tdNr);
+
+                let tdTitel = document.createElement("td");
+                tdTitel.innerText = titleObj.titel;
+                tr.appendChild(tdTitel);
+
+                let tdKomponist = document.createElement("td");
+                if (titleObj.komponist_name != "null") {
+                    tdKomponist.innerText = titleObj.komponist_name;
+                }
+                tr.appendChild(tdKomponist);
+
+                let tdBearbeiter = document.createElement("td");
+                if (titleObj.bearbeiter_name != "null") {
+                    tdBearbeiter.innerText = titleObj.bearbeiter_name;
+                }
+                tr.appendChild(tdBearbeiter);
+
+                let tdVerlag = document.createElement("td");
+                if (titleObj.verlag_name != "null") {
+                    tdVerlag.innerText = titleObj.verlag_name;
+                }
+                tr.appendChild(tdVerlag);
+
+                tableTitlesPopup.appendChild(tr);
+                i++;
+            });
+        }
+
+        function setVereinsdaten() {
             verein.forEach(v => {
                 const NameKapelle = document.querySelector('#NameKapelle');
                 NameKapelle.innerText = v.Vereinsname;
