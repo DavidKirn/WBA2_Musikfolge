@@ -141,19 +141,6 @@
         </div>
     </body>
     <script>
-        const verein = [{
-            Vereinsname : 'Musterverein',
-            VNameMusikleiter: 'Max',
-            NNameMusikleiter: 'Mustermann',
-            strasse : 'Musterstraße',
-            hNr: '1',
-            plz: 12345,
-            ort: 'Musterhausen',
-            anzMusiker: 35,
-            besetzung: 'Blasorchester',
-            GEMANr: 234567
-        }];
-
         const tableTitlesPopup = document.querySelector('#table-titles-popup');
 
         const inputVereinName = document.querySelector("#inputVereinName");
@@ -218,29 +205,20 @@
             });
         }
 
-        function setVereinsdaten() {
-            verein.forEach(v => {
-                const NameKapelle = document.querySelector('#NameKapelle');
-                NameKapelle.innerText = v.Vereinsname;
-                const MusikleiterVname = document.querySelector('#MusikleiterVname');
-                MusikleiterVname.innerText = v.VNameMusikleiter;
-                const MusikleiterNname = document.querySelector('#MusikleiterNname');
-                MusikleiterNname.innerText = v.NNameMusikleiter;
-                const StrasseVerein = document.querySelector('#StrasseVerein');
-                StrasseVerein.innerText = v.strasse;
-                const HNrVerein = document.querySelector('#HNrVerein');
-                HNrVerein.innerText = v.hNr;
-                const PlzVerein = document.querySelector('#PlzVerein');
-                PlzVerein.innerText = v.plz;
-                const OrtVerein = document.querySelector('#OrtVerein');
-                OrtVerein.innerText = v.ort;
-                const AnzMusizierende = document.querySelector('#AnzMusizierende');
-                AnzMusizierende.innerText = v.anzMusiker;
-                const GemaMitgliedNr = document.querySelector('#GemaMitgliedNr');
-                GemaMitgliedNr.innerText = v.GEMANr;
-                const Besetzung = document.querySelector('#Besetzung');
-                Besetzung.innerText = v.besetzung;
-            });
+        async function setVereinsdaten() {
+            // Load data from Backend
+            const result = await fetch('http://localhost:8000/api/verein/gib/1')
+                .then((response) => response.json());
+
+            inputVereinName.value = result.name;
+            inputVereinMusikleiter.value = result.musikleitervorname + " " + result.musikleiternachname;
+            inputVereinStraße.value = result.anschrift.straße;
+            inputVereinHausnr.value = result.anschrift.hausnr;
+            inputVereinPlz.value = result.anschrift.plz;
+            inputVereinOrt.value = result.anschrift.ort;
+            inputVereinAnzahl.value = result.anzahlMusiker;
+            inputVereinBesetzung.value = result.besetzung;
+            inputVereinGemaNr.value = result.mitgliedsnr;
         }
     </script>
 </html>

@@ -59,11 +59,6 @@ serviceRouter.post('/anschrift', function(request, response) {
         errorMsgs.push('plz fehlt');
     if (helper.isUndefined(request.body.ort)) 
         errorMsgs.push('ort fehlt');
-    if (helper.isUndefined(request.body.land)) {
-        errorMsgs.push('land fehlt');
-    } else if (helper.isUndefined(request.body.land.id)) {
-        errorMsgs.push('land.id fehlt');
-    }
     
     if (errorMsgs.length > 0) {
         console.log('Service Anschrift: Creation not possible, data missing');
@@ -73,7 +68,7 @@ serviceRouter.post('/anschrift', function(request, response) {
 
     const anschriftDao = new AnschriftDao(request.app.locals.dbConnection);
     try {
-        var obj = anschriftDao.create(request.body.strasse, request.body.hausnummer, request.body.adresszusatz, request.body.plz, request.body.ort, request.body.land.id);
+        var obj = anschriftDao.create(request.body.strasse, request.body.hausnr, request.body.plz, request.body.ort);
         console.log('Service Anschrift: Record inserted');
         response.status(200).json(obj);
     } catch (ex) {
@@ -90,19 +85,12 @@ serviceRouter.put('/anschrift', function(request, response) {
         errorMsgs.push('id fehl');
     if (helper.isUndefined(request.body.strasse)) 
         errorMsgs.push('strasse fehl');
-    if (helper.isUndefined(request.body.hausr)) 
+    if (helper.isUndefined(request.body.hausnr)) 
         errorMsgs.push('hausnummer fehl');
-    if (helper.isUndefined(request.body.adresszusatz)) 
-        request.body.adresszusatz = '';
     if (helper.isUndefined(request.body.plz)) 
         errorMsgs.push('plz fehl');
     if (helper.isUndefined(request.body.ort)) 
         errorMsgs.push('ort fehl');
-    if (helper.isUndefined(request.body.land)) {
-        errorMsgs.push('land fehl');
-    } else if (helper.isUndefined(request.body.land.id)) {
-        errorMsgs.push('land.id fehl');
-    }
 
     if (errorMsgs.length > 0) {
         console.log('Service Anschrift: Update not possible, data missing');
@@ -112,7 +100,7 @@ serviceRouter.put('/anschrift', function(request, response) {
 
     const anschriftDao = new AnschriftDao(request.app.locals.dbConnection);
     try {
-        var obj = anschriftDao.update(request.body.id, request.body.strasse, request.body.hausnummer, request.body.plz, request.body.ort);
+        var obj = anschriftDao.update(request.body.id, request.body.strasse, request.body.hausnr, request.body.plz, request.body.ort);
         console.log('Service Anschrift: Record updated, id=' + request.body.id);
         response.status(200).json(obj);
     } catch (ex) {

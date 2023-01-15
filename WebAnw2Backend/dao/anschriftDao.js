@@ -44,7 +44,7 @@ class AnschriftDao {
     }
 
     create(strasse = '', hausnr = '', plz = '', ort = '') {
-        var sql = 'INSERT INTO Anschrift (strasse,hausnr,plz,ort) VALUES (?,?,?,?)';
+        var sql = 'INSERT INTO Anschrift (straße,hausnr,plz,ort) VALUES (?,?,?,?)';
         var statement = this._conn.prepare(sql);
         var params = [strasse, hausnr, plz, ort];
         var result = statement.run(params);
@@ -56,7 +56,7 @@ class AnschriftDao {
     }
 
     update(id, strasse = '', hausnr = '', plz = '', ort = '') {
-        var sql = 'UPDATE Anschrift SET strasse=?,hausnummer=?,plz=?,ort=? WHERE id=?';
+        var sql = 'UPDATE Anschrift SET straße=?,hausnr=?,plz=?,ort=? WHERE id=?';
         var statement = this._conn.prepare(sql);
         var params = [strasse, hausnr, plz, ort, id];
         var result = statement.run(params);

@@ -1,5 +1,5 @@
 const helper = require('../helper.js');
-const AdresseDao = require('./anschriftDao.js');
+const AnschriftDao = require('./anschriftDao.js');
 
 class VereinDao {
 
@@ -12,7 +12,7 @@ class VereinDao {
     }
 
     loadById(id) {
-        const anschriftDao = new AdresseDao(this._conn);
+        const anschriftDao = new AnschriftDao(this._conn);
 
         var sql = 'SELECT * FROM Verein WHERE id=?';
         var statement = this._conn.prepare(sql);
@@ -21,14 +21,14 @@ class VereinDao {
         if (helper.isUndefined(result)) 
             throw new Error('No Record found by id=' + id);
 
-        result.anschrift = anschriftDao.loadById(result.anschriftId);
-        delete result.anschriftId;
+        result.anschrift = anschriftDao.loadById(result.anschrift_id);
+        delete result.anschrift_id;
 
         return result;
     }
 
     loadAll() {
-        const anschriftDao = new AdresseDao(this._conn);
+        const anschriftDao = new AnschriftDao(this._conn);
 
         var sql = 'SELECT * FROM Verein';
         var statement = this._conn.prepare(sql);
@@ -38,8 +38,8 @@ class VereinDao {
             return [];
 
         for (var i = 0; i < result.length; i++) {
-            result[i].anschrift = anschriftDao.loadById(result[i].anschriftId);
-            delete result[i].anschriftId;
+            result[i].anschrift = anschriftDao.loadById(result[i].anschrift_id);
+            delete result[i].anschrift_id;
         }
 
         return result;
@@ -57,7 +57,7 @@ class VereinDao {
     }
 
     create(name = '', musikleitervorname = '', musikleiternachname = '', anschriftId = 0, anzahlMusiker = 0, besetzung = 'standard', mitgliedsnr = 0) {
-        var sql = 'INSERT INTO Verein (name,musikleitervorname, musikleiternachname, anschriftId, anzahlMusiker, besetzung, mitgliedsnr) VALUES (?,?,?,?,?,?)';
+        var sql = 'INSERT INTO Verein (name, musikleitervorname, musikleiternachname, anschrift_id, anzahlMusiker, besetzung, mitgliedsnr) VALUES (?,?,?,?,?,?)';
         var statement = this._conn.prepare(sql);
         var params = [name,musikleitervorname, musikleiternachname, anschriftId, anzahlMusiker, besetzung, mitgliedsnr];
         var result = statement.run(params);
@@ -68,8 +68,8 @@ class VereinDao {
         return this.loadById(result.lastInsertRowid);
     }
 
-    update(name = '', musikleitervorname = '', musikleiternachname = '', anschriftId = 0, anzahlMusiker = 0, besetzung = 'standard', mitgliedsnr = 0) {
-        var sql = 'UPDATE Verein SET name=?,musikleitervorname=?,musikleiternachname=?,anschriftId=?,anzahlMusiker=?,besetzung=?, mitgliedsnr=? WHERE id=?';
+    update(id, name = '', musikleitervorname = '', musikleiternachname = '', anschriftId = 0, anzahlMusiker = 0, besetzung = 'standard', mitgliedsnr = 0) {
+        var sql = 'UPDATE Verein SET name=?,musikleitervorname=?,musikleiternachname=?,anschrift_id=?,anzahlMusiker=?,besetzung=?, mitgliedsnr=? WHERE id=?';
         var statement = this._conn.prepare(sql);
         var params = [name, musikleitervorname, musikleiternachname, anschriftId, anzahlMusiker, besetzung,mitgliedsnr, id];
         var result = statement.run(params);

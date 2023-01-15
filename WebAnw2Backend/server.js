@@ -68,8 +68,8 @@ try {
     var serviceRouter = require('./services/anschrift.js');
     app.use(TOPLEVELPATH, serviceRouter);
 
-    // var serviceRouter = require('./services/verein.js');
-    // app.use(TOPLEVELPATH, serviceRouter);
+    var serviceRouter = require('./services/verein.js');
+    app.use(TOPLEVELPATH, serviceRouter);
 
     // var serviceRouter = require('./services/veranstaltung.js');
     // app.use(TOPLEVELPATH, serviceRouter);
