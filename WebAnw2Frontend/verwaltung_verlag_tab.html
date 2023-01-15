@@ -6,7 +6,7 @@
         <title>Musikfolge</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <link href="stylesheet.css" rel="stylesheet" type="text/css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     </head>
     <body>
 
@@ -89,13 +89,13 @@
                 <div class="container text-center py-3">
                     <div class="row justify-content-center">
                         <div class="col-4 col-md-3">
-                            <button id="btn-edit" type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalEditPublisher">Bearbeiten</button>
+                            <button id="btn-edit" type="button" class="btn btn-secondary w-100" disabled>Bearbeiten</button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <button id="btn-add" type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalAddPublisher">Hinzufügen</button>
+                            <button id="btn-add" type="button" class="btn btn-secondary w-100" >Hinzufügen</button>
                         </div>
                         <div class="col-4 col-md-3">
-                            <button id="btn-delete" type="button" class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalDeletePublisher">Löschen</button>
+                            <button id="btn-delete" type="button" class="btn btn-secondary w-100" disabled>Löschen</button>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center pt-3">
@@ -120,9 +120,7 @@
                             </div>
 
                             <div class="modal-footer">
-                                <a href="verwaltung_verlag_tab.html" class="text-decoration-none-text-body">
                                     <button type="button" class="btn btn-primary" id="btn-update-Publisher">Ändern</button>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -144,9 +142,7 @@
                                 <input type="text" class="form-control" id="input_add_publisher">
                             </div>
                             <div class="modal-footer">
-                                <a href="verwaltung_verlag_tab.html" class="text-decoration-none-text-body">
                                     <button type="button" class="btn btn-primary" id="btn-create-publisher">Hinzufügen</button>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -167,25 +163,54 @@
                                 <label class="form-label">Verlag wirklich löschen?</label>
                             </div>
                             <div class="modal-footer">
-                                <a href="verwaltung_verlag_tab.html" class="text-decoration-none-text-body">
                                     <button type="button" class="btn btn-primary" id="btn-delete-publisher">Löschen bestätigen</button>
-                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Toasts -->
+        <!-- Success toast -->
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div class="toast align-items-center text-white bg-success border-0" id="toastSuccess" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="toastSuccessMessage"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <!-- Failure toast -->
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div class="toast align-items-center text-white bg-danger border-0" id="toastFailure" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="toastFailureMessage"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
         <script>
             const tableVerlag = document.querySelector("#table-verlag");
+
             const btnEdit = document.querySelector("#btn-edit");
             const btnAdd = document.querySelector("#btn-add");
             const btnDelete = document.querySelector("#btn-delete");
+
             const btnPopupCreatePublisher = document.querySelector('#btn-create-publisher');
             const btnPopupDeletePublisher = document.querySelector('#btn-delete-publisher');
             const btnPopupUpdatePublisher = document.querySelector("#btn-update-Publisher");
 
+            const modalEditPublisher = new bootstrap.Modal('#modalEditPublisher');
+            const modalAddPublisher = new bootstrap.Modal('#modalAddPublisher');
+            const modalDeletePublisher = new bootstrap.Modal('#modalDeletePublisher');
+
+            const toastSuccess = new bootstrap.Toast("#toastSuccess");
+            const toastSuccessMessage = document.querySelector("#toastSuccessMessage");
+            const toastFailure = new bootstrap.Toast("#toastFailure");
+            const toastFailureMessage = document.querySelector("#toastFailureMessage");
+
             const editInput = document.querySelector("#edit-Publisher-Input");
+            const addInputPublisher = document.querySelector('#input_add_publisher');
             const publisherToDelete = document.querySelector('#publisher-to-delete');
 
             window.addEventListener("DOMContentLoaded", (event) => {
@@ -195,8 +220,13 @@
                     console.log("btn Edit Publisher pressed");
                     let selectedItem = getSelectedItem();
                     editInput.value = selectedItem.verlag_name;
+                    modalEditPublisher.show();
                 });
                 
+                btnAdd.addEventListener('Click', (event) =>{
+                    modalAddPublisher.show();
+                });
+
                 btnDelete.addEventListener('click', (event) => {
                     let selectedItems = getAllSelectedItems();
                     selectedItems.forEach((Element) => {
@@ -204,6 +234,7 @@
                         p.innerText = Element.verlag_name;
                         publisherToDelete.append(p);
                     });
+                    modalDeletePublisher.show();
                 });
 
                 btnPopupUpdatePublisher.addEventListener('click', (event) => {
@@ -211,7 +242,7 @@
                 });
                 
                 btnPopupCreatePublisher.addEventListener('click', (event) => {
-                    createPublisher();
+                    addPublisher();
                 });
 
                 btnPopupDeletePublisher.addEventListener('click', (event) => {
@@ -223,74 +254,92 @@
                 const verlagArr = await fetch('http://localhost:8000/api/verlag/alle')
                     .then((response) => response.json());
 
-                renderTableEntries(verlagArr);
-
+                verlagArr.forEach((verlag) => {
+                    addTableEntry(verlag);
+                });
                 updateButtonStates();
             }
 
-            async function createPublisher(){
+            function showSuccessMessage(message) {
+                toastSuccessMessage.innerText = message;
+                toastSuccess.show();
+            }
+
+            function showFailureMessage(message) {
+                toastFailureMessage.innerText = message;
+                toastFailure.show();
+            }
+
+            async function addPublisher(){
                 console.log("in create Publisher Modal");
-                const input = document.querySelector('#input_add_publisher');
-                
-                if (input.value ==""){
+                let publisherItemData ={};
+                if (addInputPublisher.value.trim() ==""){
+                    showFailureMessage("Es wurde kein Verlag eingegeben.");
                     return;
                 }
                 else{
-                    let publisherItemData ={
-                        name: input.value,
-                    };
-                    input.value = "";
-                    const response = await fetch("http://localhost:8000/api/verlag",{
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(publisherItemData)
-                    })
-                    .then((response) => response.json().then((data) =>(
-                        {
-                            status: response.status,
-                            body: data
-                        }
+                    publisherItemData.name = addInputPublisher.value,
+                    addInputPublisher.value = "";
+                }
+                console.log(JSON.stringify(publisherItemData));
+
+                const response = await fetch("http://localhost:8000/api/verlag",{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(publisherItemData)
+                })
+                .then((response) => response.json().then((data) =>(
+                    {
+                        status: response.status,
+                        body: data
+                    }
                 )));
+                console.log("Verlag hinzufügen Response: " + response.status);
+                addTableEntry(response.body);
+                modalAddPublisher.hide();
+
+                if (response.status == 200) {
+                    showSuccessMessage("Verlag wurde erfolgreich hinzugefügt.");
+                } else {
+                    showFailureMessage("Beim Hinzufügen des Verlags ist etwas schiefgelaufen!");
                 }
             }
             
-            function renderTableEntries(verlagArr) {
-                verlagArr.forEach((verlag) => {
-                    let tr = document.createElement("tr");
-                    tr.setAttribute("id", "table-row-verlag-" + verlag.id);
-                    tr.addEventListener("click", () => {
-                        const checkbox = document.querySelector("#checkbox-verlag-" + verlag.id);
+            function renderTableEntry(verlagObj) {
+                let tr = document.createElement("tr");
+                tr.setAttribute("id", "table-row-publisher-" + verlagObj.id);
+                tr.addEventListener("click", () => {
+                    const checkbox = document.querySelector("#checkbox-verlag-" + verlagObj.id);
 
-                        if (tr.classList.contains("selected")) {
-                            tr.classList.remove("selected");
-                            checkbox.checked = false;
-                        } else {
-                            tr.classList.add("selected");
-                            checkbox.checked = true;
-                        }
+                    if (tr.classList.contains("selected")) {
+                        tr.classList.remove("selected");
+                        checkbox.checked = false;
+                    } else {
+                        tr.classList.add("selected");
+                        checkbox.checked = true;
+                    }
 
-                        updateButtonStates();
-                    });
-                    
-                    let tdCheckbox = document.createElement("td");
-                    let inputCheckbox = document.createElement("input");
-                    inputCheckbox.classList.add("form-check-input");
-                    inputCheckbox.setAttribute("type", "checkbox");
-                    inputCheckbox.setAttribute("id", "checkbox-verlag-" + verlag.id);
-                    tdCheckbox.appendChild(inputCheckbox);
-                    tr.appendChild(tdCheckbox);
-
-                    let tdBearbeiter = document.createElement("td");
-                    tdBearbeiter.innerText = verlag.name;
-                    tr.appendChild(tdBearbeiter);
-
-                    tr.dataset.verlag_id = verlag.id;
-                    tr.dataset.verlag_name = verlag.name;
-
-                    tableVerlag.appendChild(tr);
+                    updateButtonStates();
                 });
+                
+                let tdCheckbox = document.createElement("td");
+                let inputCheckbox = document.createElement("input");
+                inputCheckbox.classList.add("form-check-input");
+                inputCheckbox.setAttribute("type", "checkbox");
+                inputCheckbox.setAttribute("id", "checkbox-verlag-" + verlagObj.id);
+                tdCheckbox.appendChild(inputCheckbox);
+                tr.appendChild(tdCheckbox);
+
+                let tdPublisher = document.createElement("td");
+                tdPublisher.innerText = verlagObj.name;
+                tr.appendChild(tdPublisher);
+
+                tr.dataset.verlag_id = verlagObj.id;
+                tr.dataset.verlag_name = verlagObj.name;
+
+                return tr;
             }
 
             function updateButtonStates() {
@@ -311,6 +360,19 @@
                 }
             }
 
+            function addTableEntry(verlagObj) {
+                tableVerlag.appendChild(renderTableEntry(verlagObj));
+            }
+            function updateTableEntry(verlagObj) {
+                let tr = document.querySelector("#table-row-publisher-" + verlagObj.id);
+                tr.replaceWith(renderTableEntry(verlagObj));
+            }
+
+            function deleteTableEntry(verlagObj) {
+                let tr = document.querySelector("#table-row-publisher-" + verlagObj.id);
+                tr.remove();
+            }
+
             function getSelectedItem() {
                 let selectedElement = document.querySelector("tr.selected");
                 return selectedElement.dataset;
@@ -326,15 +388,21 @@
 
             async function editPublisher(){
                 publisherItemData = {};
-                console.log('in edit Publisher In Backend');
+                console.log('in edit Publisher Modal');
 
                 let selectedItem = getSelectedItem();
+
                 publisherItemData.id = selectedItem.verlag_id;
 
                 if (editInput.value != "" & editInput.valuel !=" "){
                     publisherItemData.name = editInput.value;
                 }
+                else{
+                    showFailureMessage("Eingegebener Verlag ist ungültig.");
+                    return;
+                }
                 console.log(JSON.stringify(publisherItemData));
+
                 const response = await fetch("http://localhost:8000/api/verlag", {
                     method: 'PUT',
                     headers: {
@@ -342,27 +410,49 @@
                     },
                     body: JSON.stringify(publisherItemData)
                 })
-                .then((response) => reesponse.json().then((data) => (
+                .then((response) => response.json().then((data) => (
                     {
                         status : response.status,
                         body: data
                     }
                 )));
+
+                console.log("Verlag bearbeiten Response: " + response.status);
+                updateTableEntry(response.body);
+                modalEditPublisher.hide();
+
+                if (response.status == 200) {
+                    showSuccessMessage("Verlag wurde erfolgreich bearbeitet.");
+                } else {
+                    showFailureMessage("Beim Bearbeiten des Verlags ist etwas schiefgelaufen!");
+                }
             }
 
             async function deletePublisher(){
                 let selectedItems = getAllSelectedItems();
+
                  selectedItems.forEach(async element => {
                     const response= await fetch("http://localhost:8000/api/verlag/" + element.verlag_id,{
                     method: "DELETE"
                     })
-                    .then((response) => response.hson().then((data) => (
+                    .then((response) => response.json().then((data) => (
                         {
                             status: response.status,
                             body: data
                         }
-                    ))); 
+                    )));
+                    console.log("Verlag löschen Response: " + response.status);
+                    deleteTableEntry(response.body.eintrag);
+                    
+
+                    if (response.status == 200) {
+                        showSuccessMessage("Verlag wurde erfolgreich gelöscht.");
+                    } else {
+                        showFailureMessage("Beim Löschen des Verlag ist etwas schiefgelaufen!");
+                    }
                 });
+
+                modalDeletePublisher.hide();
             }
 
         </script>
