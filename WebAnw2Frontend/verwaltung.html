@@ -89,13 +89,13 @@
             <div class="container text-center py-3">
                 <div class="row justify-content-center">
                     <div class="col-4 col-md-3">
-                            <button type="button" class="btn btn-secondary w-100" id="btn-edit">Bearbeiten</button>
+                            <button type="button" class="btn btn-secondary w-100" id="btn-edit" disabled>Bearbeiten</button>
                     </div>
                     <div class="col-4 col-md-3">
                             <button type="button" class="btn btn-secondary w-100" id="btn-add">Hinzufügen</button>
                     </div>
                     <div class="col-4 col-md-3">
-                            <button type="button" class="btn btn-secondary w-100" id="btn-delete" data-bs-toggle="modal" data-bs-target="#modalDeleteComposer">Löschen</button>
+                            <button type="button" class="btn btn-secondary w-100" id="btn-delete" disabled>Löschen</button>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center pt-3">
@@ -111,9 +111,9 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Komponist bearbeiten</h5>
-                            <a href="verwaltung.html">
+                            <!--<a href="verwaltung.html">-->
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </a>
+                            <!--</a>-->
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -122,9 +122,9 @@
                             </div>
 
                             <div class="modal-footer">
-                                <a href="verwaltung.html" class="text-decoration-none-text-body">
+                                <!--<a href="verwaltung.html" class="text-decoration-none-text-body">-->
                                     <button type="button" class="btn btn-primary" id="btnPopup-komponist-edit">Ändern</button>
-                                </a>
+                               <!-- </a>-->
                             </div>
                         </div>
                     </div>
@@ -138,9 +138,9 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Komponist hinzufügen</h5>
-                            <a href="verwaltung.html">
+                            <!--<a href="verwaltung.html">-->
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
-                            </a>
+                            <!--</a>-->
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -169,9 +169,9 @@
                                 <label class="form-label">Komponist wirklich löschen?</label> 
                             </div>
                             <div class="modal-footer">
-                                <a href="verwaltung.html" class="text-decoration-none-text-body">
+                                <!--<a href="verwaltung.html" class="text-decoration-none-text-body">-->
                                     <button type="button" class="btn btn-primary" id="btnPopup-komponist-delete">Löschen bestätigen</button>
-                                </a>
+                                <!--</a>-->
                             </div>
                         </div>
                     </div>
@@ -248,6 +248,18 @@
                     modalKomponistDelete.show(); 
                     });
                 });
+                btnPopupKomponistEdit.addEventListener("click", (event) => {
+                    editComposer();
+                });
+                btnPopupKomponistAdd.addEventListener("click", (event) => {
+                    addComposer();
+                });
+                btnPopupKomponistDelete.addEventListener("click", (event) => {
+                    deleteComposer();
+                });
+                inputSearch.addEventListener("input", (event)=>{
+                    search(); 
+                }); 
             });
 
             async function init() {
@@ -256,23 +268,14 @@
                     .then((response) => response.json());
 
                 // Create table row elements
-                renderTableEntries(komponistArr);
+                komponistArr.forEach((komponist) => {
+                    addTableEntry(komponist);
+                });
 
                 updateButtonStates();
             }
 
-            btnPopupKomponistEdit.addEventListener("click", (event) => {
-                    editComposer();
-                });
-            btnPopupKomponistAdd.addEventListener("click", (event) => {
-                    addComposer();
-                });
-            btnPopupKomponistDelete.addEventListener("click", (event) => {
-                    deleteComposer();
-                });
-            inputSearch.addEventListener("input", (event)=>{
-                    search(); 
-                }); 
+            
 
             async function editComposer(){
                 composerItemData = {};
@@ -292,7 +295,7 @@
                     },
                     body: JSON.stringify(composerItemData)
                 })
-                .then((response) => reesponse.json().then((data) => (
+                .then((response) => response.json().then((data) => (
                     {
                         status : response.status,
                         body: data
@@ -347,23 +350,25 @@
                     const response= await fetch("http://localhost:8000/api/komponist/" + element.komponist_id,{
                     method: "DELETE"
                     })
-                    .then((response) => response.hson().then((data) => (
+                    .then((response) => response.json().then((data) => (
                         {
                             status: response.status,
                             body: data
                         }
                     ))); 
-                });
+                
 
                 console.log("Komponist löschen Response: " + response.status);
                 deleteTableEntry(response.body.eintrag);
-                modalKomponistDelete.hide(); 
+                 
 
                 if (response.status == 200) {
                     showSuccessMessage("Komponist wurde erfolgreich gelöscht.");
                 } else {
                     showFailureMessage("Beim Löschen des Komponisten ist etwas schiefgelaufen!");
                 }
+            });
+            modalKomponistDelete.hide();
             }
 
             async function search(){
@@ -386,9 +391,9 @@
 
             function createTableEntry(komponistObj) {
                 let tr = document.createElement("tr");
-                tr.setAttribute("id", "table-row-title-" + komponistObj.id);
+                tr.setAttribute("id", "table-row-komponist-" + komponistObj.id);
                 tr.addEventListener("click", () => {
-                    const checkbox = document.querySelector("#checkbox-title-" + komponistObj.id);
+                    const checkbox = document.querySelector("#checkbox-komponist-" + komponistObj.id);
 
                     if (tr.classList.contains("selected")) {
                         tr.classList.remove("selected");
@@ -405,7 +410,7 @@
                 let inputCheckbox = document.createElement("input");
                 inputCheckbox.classList.add("form-check-input");
                 inputCheckbox.setAttribute("type", "checkbox");
-                inputCheckbox.setAttribute("id", "checkbox-title-" + komponistObj.id);
+                inputCheckbox.setAttribute("id", "checkbox-komponist-" + komponistObj.id);
                 tdCheckbox.appendChild(inputCheckbox);
                 tr.appendChild(tdCheckbox);
 
@@ -413,56 +418,21 @@
                 tdKomponist.innerText = komponistObj.name;
                 tr.appendChild(tdKomponist);
 
-                tr.dataset.id = komponistObj.id;
-                tr.dataset.name = komponistObj.name; 
+                tr.dataset.komponist_id = komponistObj.id;
+                tr.dataset.komponist_name = komponistObj.name; 
                 return tr;
             }
 
             function updateTableEntry(titleObj) {
-                let tr = document.querySelector("#table-row-title-" + titleObj.id);
+                let tr = document.querySelector("#table-row-komponist-" + titleObj.id);
                 tr.replaceWith(createTableEntry(titleObj));
-            }
-
-            function renderTableEntries(komponistArr) {
-                komponistArr.forEach((komponist) => {
-                    let tr = document.createElement("tr");
-                    tr.setAttribute("id", "table-row-komponist-" + komponist.id);
-                    tr.addEventListener("click", () => {
-                        const checkbox = document.querySelector("#checkbox-komponist-" + komponist.id);
-
-                        if (tr.classList.contains("selected")) {
-                            tr.classList.remove("selected");
-                            checkbox.checked = false;
-                        } else {
-                            tr.classList.add("selected");
-                            checkbox.checked = true;
-                        }
-
-                        updateButtonStates();
-                    });
-                    
-                    let tdCheckbox = document.createElement("td");
-                    let inputCheckbox = document.createElement("input");
-                    inputCheckbox.classList.add("form-check-input");
-                    inputCheckbox.setAttribute("type", "checkbox");
-                    inputCheckbox.setAttribute("id", "checkbox-komponist-" + komponist.id);
-                    tdCheckbox.appendChild(inputCheckbox);
-                    tr.appendChild(tdCheckbox);
-
-                    let tdKomponist = document.createElement("td");
-                    tdKomponist.innerText = komponist.name;
-                    tr.appendChild(tdKomponist);
-
-                    tr.dataset.komponist_id = komponist.id; 
-                    tr.dataset.komponist_name = komponist.name; 
-
-                    tableKomponisten.appendChild(tr);
-                });
+                updateButtonStates();
             }
 
             function deleteTableEntry(komponistObj) {
                 let tr = document.querySelector("#table-row-komponist-" + komponistObj.id);
                 tr.remove();
+                updateButtonStates();
             }
 
             function updateButtonStates() {
@@ -497,9 +467,6 @@
                 return Elements;
             }
 
-            
-
-            
             function showSuccessMessage(message) {
                 toastSuccessMessage.innerText = message;
                 toastSuccess.show();
