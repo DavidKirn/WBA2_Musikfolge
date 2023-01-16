@@ -300,14 +300,14 @@
                     }
                 )));
                 console.log("Verlag hinzufügen Response: " + response.status);
-                addTableEntry(response.body);
-                modalAddPublisher.hide();
 
                 if (response.status == 200) {
-                    showSuccessMessage("Verlag wurde erfolgreich hinzugefügt.");
+                    showSuccessMessage("Verlag wurde erfolgreich hinzugefügt."); 
+                    addTableEntry(response.body);
                 } else {
                     showFailureMessage("Beim Hinzufügen des Verlags ist etwas schiefgelaufen!");
                 }
+                modalAddPublisher.hide();
             }
             
             function renderTableEntry(verlagObj) {
@@ -369,11 +369,13 @@
             function updateTableEntry(verlagObj) {
                 let tr = document.querySelector("#table-row-publisher-" + verlagObj.id);
                 tr.replaceWith(renderTableEntry(verlagObj));
+                updateButtonStates();
             }
 
             function deleteTableEntry(verlagObj) {
                 let tr = document.querySelector("#table-row-publisher-" + verlagObj.id);
                 tr.remove();
+                updateButtonStates();
             }
 
             function getSelectedItem() {
@@ -421,14 +423,14 @@
                 )));
 
                 console.log("Verlag bearbeiten Response: " + response.status);
-                updateTableEntry(response.body);
-                modalEditPublisher.hide();
 
                 if (response.status == 200) {
                     showSuccessMessage("Verlag wurde erfolgreich bearbeitet.");
+                    updateTableEntry(response.body);
                 } else {
                     showFailureMessage("Beim Bearbeiten des Verlags ist etwas schiefgelaufen!");
                 }
+                modalEditPublisher.hide();
             }
 
             async function deletePublisher(){
@@ -445,16 +447,15 @@
                         }
                     )));
                     console.log("Verlag löschen Response: " + response.status);
-                    deleteTableEntry(response.body.eintrag);
-                    
 
                     if (response.status == 200) {
                         showSuccessMessage("Verlag wurde erfolgreich gelöscht.");
+                        deleteTableEntry(response.body.eintrag);
                     } else {
                         showFailureMessage("Beim Löschen des Verlag ist etwas schiefgelaufen!");
                     }
                 });
-
+                publisherToDelete.replaceChildren('');
                 modalDeletePublisher.hide();
             }
 

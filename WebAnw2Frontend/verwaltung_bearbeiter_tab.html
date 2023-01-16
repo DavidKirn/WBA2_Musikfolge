@@ -409,14 +409,14 @@
                 )));
 
                 console.log("Bearbeiter bearbeiten Response: " + response.status);
-                updateTableEntry(response.body);
-                modalEditEditor.hide();
 
                 if (response.status == 200) {
                     showSuccessMessage("Bearbeiter wurde erfolgreich bearbeitet.");
+                    updateTableEntry(response.body);
                 } else {
                     showFailureMessage("Beim Bearbeiten des Bearbeiters ist etwas schiefgelaufen!");
                 }
+                modalEditEditor.hide();
             }
 
             async function search(){
@@ -460,14 +460,14 @@
                     }
                 )));
                 console.log("Bearbeiter hinzufügen Response: " + response.status);
-                addTableEntry(response.body);
-                modalAddEditor.hide();
 
                 if (response.status == 200) {
                     showSuccessMessage("Bearbeiter wurde erfolgreich hinzugefügt.");
+                    addTableEntry(response.body);
                 } else {
                     showFailureMessage("Beim Hinzufügen des Bearbeiters ist etwas schiefgelaufen!");
                 }
+                modalAddEditor.hide();
             }
 
             async function deleteEditor(){
@@ -484,16 +484,16 @@
                         }
                     )));
                     console.log("Bearbeiter löschen Response: " + response.status);
-                    deleteTableEntry(response.body.eintrag);
-                    
 
                     if (response.status == 200) {
                         showSuccessMessage("Bearbeiter wurde erfolgreich gelöscht.");
+                        deleteTableEntry(response.body.eintrag);
+                    
                     } else {
                         showFailureMessage("Beim Löschen des Bearbeiter ist etwas schiefgelaufen!");
                     }
                 });
-
+                EditorToDelete.replaceChildren('');
                 modalDeleteEditor.hide();
             }
         </script>

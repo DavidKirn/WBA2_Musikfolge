@@ -111,9 +111,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Komponist bearbeiten</h5>
-                            <!--<a href="verwaltung.html">-->
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            <!--</a>-->
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -122,9 +120,7 @@
                             </div>
 
                             <div class="modal-footer">
-                                <!--<a href="verwaltung.html" class="text-decoration-none-text-body">-->
                                     <button type="button" class="btn btn-primary" id="btnPopup-komponist-edit">Ändern</button>
-                               <!-- </a>-->
                             </div>
                         </div>
                     </div>
@@ -138,9 +134,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Komponist hinzufügen</h5>
-                            <!--<a href="verwaltung.html">-->
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
-                            <!--</a>-->
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -169,9 +163,7 @@
                                 <label class="form-label">Komponist wirklich löschen?</label> 
                             </div>
                             <div class="modal-footer">
-                                <!--<a href="verwaltung.html" class="text-decoration-none-text-body">-->
                                     <button type="button" class="btn btn-primary" id="btnPopup-komponist-delete">Löschen bestätigen</button>
-                                <!--</a>-->
                             </div>
                         </div>
                     </div>
@@ -240,12 +232,12 @@
                     modalKomponistAdd.show(); 
                 }); 
                 btnDelete.addEventListener('click', (event) => {
-                let selectedItems = getAllSelectedItems();
-                selectedItems.forEach((Element) => {
-                    const p = document.createElement('p');
-                    p.innerText = Element.komponist_name;
-                    komponistToDelete.append(p);
-                    modalKomponistDelete.show(); 
+                    let selectedItems = getAllSelectedItems();
+                    selectedItems.forEach((Element) => {
+                        const p = document.createElement('p');
+                        p.innerText = Element.komponist_name;
+                        komponistToDelete.append(p);
+                        modalKomponistDelete.show(); 
                     });
                 });
                 btnPopupKomponistEdit.addEventListener("click", (event) => {
@@ -275,8 +267,6 @@
                 updateButtonStates();
             }
 
-            
-
             async function editComposer(){
                 composerItemData = {};
                 console.log('in edit Composer In Backend');
@@ -302,14 +292,14 @@
                     }
                 )));
                 console.log("Komponist bearbeiten Response: " + response.status); 
-                updateTableEntry(response.body); 
-                modalKomponistEdit.hide(); 
 
                 if (response.status == 200) {
                     showSuccessMessage("Komponist wurde erfolgreich geändert.");
+                    updateTableEntry(response.body); 
                 } else {
                     showFailureMessage("Beim Ändern des Komponisten ist etwas schiefgelaufen!");
                 }
+                modalKomponistEdit.hide();
             }
 
             async function addComposer(){
@@ -334,14 +324,14 @@
                     }
                 )));
                 console.log("Komponist hinzufügen Response: " + response.status);
-                addTableEntry(response.body);
-                modalKomponistAdd.hide(); 
 
                 if (response.status == 200) {
                     showSuccessMessage("Komponist wurde erfolgreich hinzugefügt.");
+                    addTableEntry(response.body);
                 } else {
                     showFailureMessage("Beim Hinzufügen des Komponist ist etwas schiefgelaufen!");
                 }
+                modalKomponistAdd.hide();
             }
 
             async function deleteComposer() {
@@ -357,18 +347,17 @@
                         }
                     ))); 
                 
-
                 console.log("Komponist löschen Response: " + response.status);
-                deleteTableEntry(response.body.eintrag);
-                 
 
                 if (response.status == 200) {
                     showSuccessMessage("Komponist wurde erfolgreich gelöscht.");
+                    deleteTableEntry(response.body.eintrag);
                 } else {
                     showFailureMessage("Beim Löschen des Komponisten ist etwas schiefgelaufen!");
                 }
-            });
-            modalKomponistDelete.hide();
+                });
+                komponistToDelete.replaceChildren('');
+                modalKomponistDelete.hide();
             }
 
             async function search(){
