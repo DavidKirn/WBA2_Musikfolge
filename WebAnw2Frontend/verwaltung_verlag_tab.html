@@ -39,11 +39,8 @@
 
             <div class="content-header container">
                 <div class="row my-3">
-                    <div class="col-8">
-                        <input class="form-control" type="text" name="search" placeholder="Suche">
-                    </div>
-                    <div class="col-4">
-                        <button type="button" class="btn btn-secondary w-100">Suchen</button>
+                    <div class="col-12">
+                        <input class="form-control" type="text" name="search" id="input-search" placeholder="Suche">
                     </div>
                 </div>
                 <hr>
@@ -213,6 +210,8 @@
             const addInputPublisher = document.querySelector('#input_add_publisher');
             const publisherToDelete = document.querySelector('#publisher-to-delete');
 
+            const inputSearch = document.querySelector('#input-search'); 
+
             window.addEventListener("DOMContentLoaded", (event) => {
                 init();
 
@@ -248,6 +247,10 @@
                 btnPopupDeletePublisher.addEventListener('click', (event) => {
                     deletePublisher();
                 });
+
+                inputSearch.addEventListener('input', (event)=>{
+                    search(); 
+                }); 
             });
 
             async function init() {
@@ -453,6 +456,20 @@
                 });
 
                 modalDeletePublisher.hide();
+            }
+
+            async function search(){
+                tableVerlag.innerHTML = ""; 
+                let link = 'http://localhost:8000/api/verlag/such/' + inputSearch.value; 
+                if(inputSearch.value.trim()==""){
+                    link = 'http://localhost:8000/api/verlag/alle'
+                }
+                const verlagArr = await fetch(link)
+                    .then((response) => response.json());
+                verlagArr.forEach((verlag)=>{
+                    addTableEntry(verlag); 
+                }); 
+                updateButtonStates();
             }
 
         </script>

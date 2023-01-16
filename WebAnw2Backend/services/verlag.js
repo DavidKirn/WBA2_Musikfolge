@@ -24,9 +24,9 @@ serviceRouter.get('/verlag/such/:name', function(request, response) {
 
     const verlagDao = new VerlagDao(request.app.locals.dbConnection);
     try {
-        var obj = verlagDao.loadByName(request.params.name);
+        var arr = verlagDao.loadByName(request.params.name);
         console.log('Service Verlag: Record loaded');
-        response.status(200).json(obj);
+        response.status(200).json(arr);
     } catch (ex) {
         console.error('Service Verlag: Error loading searched records. Exception occured: ' + ex.message);
         response.status(400).json({ 'fehler': true, 'nachricht': ex.message });

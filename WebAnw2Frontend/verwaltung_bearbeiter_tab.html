@@ -38,11 +38,8 @@
 
             <div class="content-header container">
                 <div class="row my-3">
-                    <div class="col-8">
-                        <input class="form-control" type="text" name="search" placeholder="Suche">
-                    </div>
-                    <div class="col-4">
-                        <button type="button" class="btn btn-secondary w-100" id="searchButton" onclick="updateSearch()">Suchen</button>
+                    <div class="col-12">
+                        <input class="form-control" type="text" name="search" id="input-search" placeholder="Suche">
                     </div>
                 </div>
                 <hr>
@@ -251,6 +248,10 @@
                 btnPopupDeleteEditor.addEventListener('click', (event) => {
                     deleteEditor();
                 });
+
+                inputSearch.addEventListener('input', (event)=>{
+                    search(); 
+                }); 
             });
 
             async function init() {
@@ -416,6 +417,20 @@
                 } else {
                     showFailureMessage("Beim Bearbeiten des Bearbeiters ist etwas schiefgelaufen!");
                 }
+            }
+
+            async function search(){
+                tableBearbeiter.innerHTML = ""; 
+                let link = 'http://localhost:8000/api/bearbeiter/such/' + inputSearch.value; 
+                if(inputSearch.value.trim()==""){
+                    link = 'http://localhost:8000/api/bearbeiter/alle'
+                }
+                const bearbeiterArr = await fetch(link)
+                    .then((response) => response.json());
+                bearbeiterArr.forEach((bearbeiter)=>{
+                    addTableEntry(bearbeiter); 
+                }); 
+                updateButtonStates();
             }
 
             async function addEditor(){
