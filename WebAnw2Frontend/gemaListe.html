@@ -283,9 +283,10 @@
         }
 
         function updateButtonStates() {
-            if (selectedTitlesCache.length == 0) {
+            let length = Object.keys(selectedTitlesCache).length;
+            if (length == 0) {
                 btnGemaListe.disabled = true;
-            } else if (selectedTitlesCache.length >= 1) {
+            } else if (length >= 1) {
                 btnGemaListe.disabled = false;
             }
         }
